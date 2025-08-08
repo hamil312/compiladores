@@ -1,0 +1,1 @@
+print("this program is just interpreted")
