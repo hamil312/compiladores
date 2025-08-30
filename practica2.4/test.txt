@@ -1,0 +1,11 @@
+x = 0;
+for (i = 0; i < 3; i = i + 1) {
+  switch (i) {
+    case 0: x = x + 1;
+    case 1: x = x + 2;
+    default: x = x + 3;
+  };
+};
+if (x > 5) {
+  y = x * 10;
+};
