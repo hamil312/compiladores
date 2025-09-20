@@ -57,7 +57,7 @@ argList: expr (',' expr)*;
 operator: LT | GT | GE | LE | NE;
 
 // Tipos de datos agregados para reconocimiento 
-type: 'int' | 'float' | 'void' | 'string';
+type: INT_TYPE | FLOAT_TYPE | VOID_TYPE | STRING_TYPE;
 
 // Palabras y símbolos
 IF: 'if';
@@ -77,6 +77,10 @@ PLUS: '+';
 MINUS: '-';
 MULT: '*';
 DIV: '/';
+INT_TYPE: 'int';
+STRING_TYPE: 'string';
+VOID_TYPE: 'void';
+FLOAT_TYPE: 'float';
 
 // Identificadores, números y cadenas agregadas
 ID: [a-zA-Z_][a-zA-Z_0-9]*;

@@ -1,18 +1,16 @@
 from antlr4 import *
-from generated.WhileLangLexer import WhileLangLexer
-from generated.WhileLangParser import WhileLangParser
+from generated.IfElseLangLexer import IfElseLangLexer
+from generated.IfElseLangParser import IfElseLangParser
 from semantic_analyzer.SemanticVisitor import SemanticVisitor
 
 # === Entrada de prueba ===
-input_text = """int x = 10;
-string x = "hola";
-"""
+input_text = 'int obtenerNumero() { string saludo = "esto no es un numero";return saludo; }'
 
 # Crear flujo de entrada
 input_stream = InputStream(input_text)
 
 # === Fase léxica ===
-lexer = WhileLangLexer(input_stream)
+lexer = IfElseLangLexer(input_stream)
 token_stream = CommonTokenStream(lexer)
 token_stream.fill()
 
@@ -22,7 +20,7 @@ for token in token_stream.tokens:
         print(f"  - {lexer.symbolicNames[token.type]} ('{token.text}') @line {token.line}:{token.column}")
 
 print("\n## 🌳 ÁRBOL SINTÁCTICO (toStringTree)")
-parser = WhileLangParser(token_stream)
+parser = IfElseLangParser(token_stream)
 tree = parser.program()
 print(tree.toStringTree(recog=parser))
 
