@@ -53,6 +53,24 @@ class WhileLangListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by WhileLangParser#breakStatement.
+    def enterBreakStatement(self, ctx:WhileLangParser.BreakStatementContext):
+        pass
+
+    # Exit a parse tree produced by WhileLangParser#breakStatement.
+    def exitBreakStatement(self, ctx:WhileLangParser.BreakStatementContext):
+        pass
+
+
+    # Enter a parse tree produced by WhileLangParser#continueStatement.
+    def enterContinueStatement(self, ctx:WhileLangParser.ContinueStatementContext):
+        pass
+
+    # Exit a parse tree produced by WhileLangParser#continueStatement.
+    def exitContinueStatement(self, ctx:WhileLangParser.ContinueStatementContext):
+        pass
+
+
     # Enter a parse tree produced by WhileLangParser#ifStatement.
     def enterIfStatement(self, ctx:WhileLangParser.IfStatementContext):
         pass
@@ -71,12 +89,12 @@ class WhileLangListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by WhileLangParser#condition.
-    def enterCondition(self, ctx:WhileLangParser.ConditionContext):
+    # Enter a parse tree produced by WhileLangParser#ExprCondition.
+    def enterExprCondition(self, ctx:WhileLangParser.ExprConditionContext):
         pass
 
-    # Exit a parse tree produced by WhileLangParser#condition.
-    def exitCondition(self, ctx:WhileLangParser.ConditionContext):
+    # Exit a parse tree produced by WhileLangParser#ExprCondition.
+    def exitExprCondition(self, ctx:WhileLangParser.ExprConditionContext):
         pass
 
 

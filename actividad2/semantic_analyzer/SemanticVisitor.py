@@ -5,6 +5,7 @@ from .SymbolTable import SymbolTable, Symbol
 class SemanticVisitor(WhileLangVisitor):
     def __init__(self):
         self.table = SymbolTable()
+        self.loop_stack = []
 
     # Declaración de variables
     def visitDeclaration(self, ctx:WhileLangParser.DeclarationContext):
@@ -45,6 +46,7 @@ class SemanticVisitor(WhileLangVisitor):
     def visitComparisonExpr(self, ctx:WhileLangParser.ComparisonExprContext):
         left_type = self.visit(ctx.expr(0))
         right_type = self.visit(ctx.expr(1))
+        op = ctx.getChild(1).getText()
 
         if left_type == 'error_type' or right_type == 'error_type':
             return 'error_type'
@@ -52,6 +54,16 @@ class SemanticVisitor(WhileLangVisitor):
         if left_type != right_type:
             print(f"Error Semántico: Comparación entre tipos incompatibles ({left_type} vs {right_type}).")
             return 'error_type'
+
+        if op in ('<', '>', '<=', '>='):
+            if left_type != 'int':
+                print(f"Error Semántico: Operador '{op}' no soportado para tipo '{left_type}'.")
+                return 'error_type'
+
+        elif op in ('==', '!='):
+            if left_type not in ('int', 'string'):
+                print(f"Error Semántico: Operador '{op}' no soportado para tipo '{left_type}'.")
+                return 'error_type'
 
         return 'int'  # tratamos el booleano como int simple
 
@@ -79,42 +91,61 @@ class SemanticVisitor(WhileLangVisitor):
 
     # If con scopes separados
     def visitIfStatement(self, ctx:WhileLangParser.IfStatementContext):
-        # Verificar condición
-        self.visit(ctx.condition())
+        cond_type = self.visit(ctx.condition())
 
-        # Statements dentro del bloque THEN
+        if cond_type == 'error_type':
+            pass
+        elif cond_type not in ('int', 'string'):
+            print(f"Error Semántico: Condición inválida de tipo '{cond_type}'.")
+
+        # THEN
         self.table.enter_scope()
         for stmt in ctx.statement()[:len(ctx.statement()) // (2 if ctx.ELSE() else 1)]:
             self.visit(stmt)
         self.table.exit_scope()
 
-        # Statements dentro del bloque ELSE
+        # ELSE
         if ctx.ELSE():
             self.table.enter_scope()
             for stmt in ctx.statement()[len(ctx.statement()) // 2:]:
                 self.visit(stmt)
             self.table.exit_scope()
-
-        return None
     
     def visitWhileStatement(self, ctx:WhileLangParser.WhileStatementContext):
-        # Verificar condición
-        self.visit(ctx.condition())
+        cond_type = self.visit(ctx.condition())
 
-        # Statements dentro del bloque THEN
+        if cond_type == 'error_type':
+            pass
+        elif cond_type not in ('int', 'string'):
+            print(f"Error Semántico: Condición inválida de tipo '{cond_type}'.")
+
+        self.loop_stack.append(True)
+
+        # Nuevo ámbito para el cuerpo del while
         self.table.enter_scope()
-        for stmt in ctx.statement()[:len(ctx.statement()) // (2 if ctx.ELSE() else 1)]:
+        for stmt in ctx.statement():
             self.visit(stmt)
         self.table.exit_scope()
 
-        # Statements dentro del bloque ELSE
-        if ctx.ELSE():
-            self.table.enter_scope()
-            for stmt in ctx.statement()[len(ctx.statement()) // 2:]:
-                self.visit(stmt)
-            self.table.exit_scope()
+        self.loop_stack.pop()
 
-        return None
     
     def visitStringExpr(self, ctx:WhileLangParser.StringExprContext):
         return 'string'
+    
+    def visitExprCondition(self, ctx:WhileLangParser.ConditionContext):
+        expr_type = self.visit(ctx.expr())
+        if expr_type not in ('int', 'string'):
+            print(f"Error Semántico: La condición solo puede ser int o string, pero se encontró '{expr_type}'.")
+            return 'error_type'
+        return expr_type
+    
+    def visitBreakStatement(self, ctx:WhileLangParser.BreakStatementContext):
+        if not self.loop_stack:
+            print("Error Semántico: 'break' solo puede usarse dentro de un bucle.")
+        return None
+
+    def visitContinueStatement(self, ctx:WhileLangParser.ContinueStatementContext):
+        if not self.loop_stack:
+            print("Error Semántico: 'continue' solo puede usarse dentro de un bucle.")
+        return None

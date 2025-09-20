@@ -34,6 +34,16 @@ class WhileLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by WhileLangParser#breakStatement.
+    def visitBreakStatement(self, ctx:WhileLangParser.BreakStatementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by WhileLangParser#continueStatement.
+    def visitContinueStatement(self, ctx:WhileLangParser.ContinueStatementContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by WhileLangParser#ifStatement.
     def visitIfStatement(self, ctx:WhileLangParser.IfStatementContext):
         return self.visitChildren(ctx)
@@ -44,8 +54,8 @@ class WhileLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by WhileLangParser#condition.
-    def visitCondition(self, ctx:WhileLangParser.ConditionContext):
+    # Visit a parse tree produced by WhileLangParser#ExprCondition.
+    def visitExprCondition(self, ctx:WhileLangParser.ExprConditionContext):
         return self.visitChildren(ctx)
 
 
