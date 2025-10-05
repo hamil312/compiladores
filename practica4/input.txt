@@ -1,0 +1,4 @@
+int num1 = 10;
+int num2 = 5;
+int result = 0;
+bool isGreater = num1 > num2;
