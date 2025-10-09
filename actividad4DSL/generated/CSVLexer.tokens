@@ -1,9 +1,6 @@
 T__0=1
-T__1=2
-T__2=3
-TEXT=4
-STRING=5
-WS=6
+NL=2
+TEXT=3
+STRING=4
+WS=5
 ','=1
-'\r'=2
-'\n'=3

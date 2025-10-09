@@ -1,23 +1,6 @@
 {
   "rows": [
     {
-      "CorredorID": "CorredorID",
-      "Nombre": "Nombre",
-      "Edad": "Edad",
-      "Pais": "Pais",
-      "Categoria": "Categoria",
-      "TiempoSegundos": "TiempoSegundos",
-      "PosiciónFinal": "PosiciónFinal",
-      "MejorVuelta": "MejorVuelta",
-      "PrimeraVuelta": "PrimeraVuelta",
-      "SegundaVuelta": "SegundaVuelta",
-      "TerceraVuelta": "TerceraVuelta",
-      "CuartaVuelta": "CuartaVuelta",
-      "QuintaVuelta": "QuintaVuelta",
-      "PenalizacionSegundos": "PenalizacionSegundos",
-      "Descalificado": false
-    },
-    {
       "CorredorID": "C-01",
       "Nombre": "Ana",
       "Edad": 25,
@@ -160,7 +143,7 @@
       "Pais": "Argentina",
       "Categoria": "Profesional",
       "TiempoSegundos": 1500,
-      "PosiciónFinal": null,
+      "PosiciónFinal": 10,
       "MejorVuelta": 410,
       "PrimeraVuelta": 405,
       "SegundaVuelta": 410,
@@ -175,70 +158,10 @@
     "duplicate_rows_count": 0,
     "malformed_fields": [
       [
-        1,
-        "PrimeraVuelta",
-        "PrimeraVuelta",
-        "no_numérico"
-      ],
-      [
-        1,
-        "TiempoSegundos",
-        "TiempoSegundos",
-        "no_numérico"
-      ],
-      [
-        1,
-        "PosiciónFinal",
-        "PosiciónFinal",
-        "no_numérico"
-      ],
-      [
-        1,
-        "MejorVuelta",
-        "MejorVuelta",
-        "no_numérico"
-      ],
-      [
-        1,
-        "PenalizacionSegundos",
-        "PenalizacionSegundos",
-        "no_numérico"
-      ],
-      [
-        1,
-        "Edad",
-        "Edad",
-        "no_numérico"
-      ],
-      [
-        1,
-        "CuartaVuelta",
-        "CuartaVuelta",
-        "no_numérico"
-      ],
-      [
-        1,
-        "SegundaVuelta",
-        "SegundaVuelta",
-        "no_numérico"
-      ],
-      [
-        1,
-        "QuintaVuelta",
-        "QuintaVuelta",
-        "no_numérico"
-      ],
-      [
-        1,
-        "TerceraVuelta",
-        "TerceraVuelta",
-        "no_numérico"
-      ],
-      [
-        1,
-        "Descalificado",
-        "Descalificado",
-        "valor_esperado Sí/No"
+        11,
+        "ROW_LENGTH",
+        "C-10,Andres,33,Colombia,Aficionado,1275,9,430,430,430,425,430,430,0,No,",
+        "cantidad_campos"
       ]
     ],
     "best_time": {

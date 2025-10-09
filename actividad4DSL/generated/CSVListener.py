@@ -35,15 +35,6 @@ class CSVListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CSVParser#lastRow.
-    def enterLastRow(self, ctx:CSVParser.LastRowContext):
-        pass
-
-    # Exit a parse tree produced by CSVParser#lastRow.
-    def exitLastRow(self, ctx:CSVParser.LastRowContext):
-        pass
-
-
     # Enter a parse tree produced by CSVParser#text.
     def enterText(self, ctx:CSVParser.TextContext):
         pass
@@ -59,15 +50,6 @@ class CSVListener(ParseTreeListener):
 
     # Exit a parse tree produced by CSVParser#string.
     def exitString(self, ctx:CSVParser.StringContext):
-        pass
-
-
-    # Enter a parse tree produced by CSVParser#empty.
-    def enterEmpty(self, ctx:CSVParser.EmptyContext):
-        pass
-
-    # Exit a parse tree produced by CSVParser#empty.
-    def exitEmpty(self, ctx:CSVParser.EmptyContext):
         pass
 
 

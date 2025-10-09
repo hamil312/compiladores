@@ -20,8 +20,7 @@ NUMERIC_INT_FIELDS = {
 
 class AnalizadorCSV(CSVListener):
     def __init__(self):
-        # header será llenado en exitHeader o en main si lo prefieres
-        self.header = []
+        self.header = [] #Header donde se define la cabecera del CSV donde se determinan los nombres de la columna, se debe analizar aparte
         self.rows = []  # filas válidas como diccionarios
         self.duplicates_by_id = set()
         self.seen_corredor_ids = set()
@@ -39,6 +38,8 @@ class AnalizadorCSV(CSVListener):
         self.oldest = None    # (edad, row_dict)
         self.max_penalty = None  # (penalty, row_dict)
         self.ir = IR_Generator()
+        self.header_assigned_externally = False
+        self._first_row_skipped = False
 
         # Temporales para construir la fila actual (dependen de tu CSV.g4)
         # En general usaremos exitRow con ctx.field()
@@ -53,17 +54,14 @@ class AnalizadorCSV(CSVListener):
             s = s[1:-1]
         return s.strip()
 
-    def exitRow(self, ctx:CSVParser.RowContext):
+    def exitRow(self, ctx:CSVParser.RowContext): #Este me genera dudas
         # Dependiendo de la gramática, las filas del header pueden venir como header.row()
         # Aquí asumimos que el caller (main) no pasa la cabecera a este listener
-        try:
-            fields = [self._clean_field(f.getText()) for f in ctx.field()]
-        except Exception:
-            return
+        fields = [self._clean_field(f.getText()) for f in ctx.field()]
 
-        # Si aún no tenemos header, interpretamos esta fila como header
-        if not self.header:
-            self.header = fields
+        # Saltar header si ya fue asignado desde main()
+        if self.header_assigned_externally and not self._first_row_skipped:
+            self._first_row_skipped = True
             return
 
         # Si la cantidad de campos no coincide con la cabecera, lo marcamos
@@ -197,6 +195,7 @@ def main():
 
     lexer = CSVLexer(input_stream)
     stream = CommonTokenStream(lexer)
+    stream.fill()
     parser = CSVParser(stream)
 
     tree = parser.csvFile()  # parse completo
@@ -218,6 +217,7 @@ def main():
     # Si prefieres que el listener no trate la primera fila como header,
     # fijamos header ya en el analizador para que skippee la primera fila
     analizador.header = header
+    analizador.header_assigned_externally = True
 
     walker = ParseTreeWalker()
     walker.walk(analizador, tree)
@@ -249,6 +249,29 @@ def main():
     
     print("\n--- CÓDIGO INTERMEDIO (IR) ---")
     print(analizador.ir)
+
+    print("## 🔤 TOKENS")
+    for token in stream.tokens:
+        if token.type != Token.EOF:
+            print(f"  - {lexer.symbolicNames[token.type]} ('{token.text}') @line {token.line}:{token.column}")
+
+    print("\n## 🌳 ÁRBOL SINTÁCTICO (toStringTree)")
+    parser = CSVParser(stream)
+    tree = parser.csvFile()
+    print(tree.toStringTree(recog=parser))
+
+    def pretty_tree(node, rule_names, level=0):
+        if isinstance(node, TerminalNode):
+            return "  " * level + f"TOKEN({node.getText()})"
+        else:
+            rule_name = rule_names[node.getRuleIndex()]
+            result = "  " * level + rule_name
+            for child in node.children or []:
+                result += "\n" + pretty_tree(child, rule_names, level + 1)
+            return result
+
+    print("\n## 🌲 ÁRBOL SINTÁCTICO (Indentado)")
+    print(pretty_tree(tree, parser.ruleNames))
 
 if __name__ == "__main__":
     main()
