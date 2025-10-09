@@ -1,8 +1,8 @@
 class IR_Generator:
     def __init__(self):
-        self.instructions = []  # Lista para guardar las instrucciones TAC
-        self.temp_count = 0     # Contador para variables temporales (t0, t1, t2...)
-        self.label_count = 0    # Contador para etiquetas (L0, L1, L2...)
+        self.instructions = [] #Lista para guardar las instrucciones TAC
+        self.temp_count = 0 #Contador para variables temporales (t0, t1, t2...)
+        self.label_count = 0 #Contador para etiquetas (L0, L1, L2...)
 
     def new_temp(self):
         """Crea una nueva variable temporal y la devuelve."""
@@ -26,18 +26,22 @@ class IR_Generator:
         for inst in self.instructions:
             op = inst['op']
             if op in ['+', '-', '*', '/', '<', '>', '>=', '<=', '==', '!=']:
-                # Formato: result = arg1 op arg2
                 output += f"  {inst['result']} = {inst['arg1']} {op} {inst['arg2']}\n"
             elif op == '=':
-                # Formato: result = arg1
                 output += f"  {inst['result']} = {inst['arg1']}\n"
             elif op == 'if_false_goto':
-                # Formato: if_false arg1 goto result
                 output += f"  if_false {inst['arg1']} goto {inst['result']}\n"
             elif op == 'goto':
-                # Formato: goto result
                 output += f"  goto {inst['result']}\n"
             elif op.endswith(':'):
-                # Formato: op (ej. L1:)
                 output += f"{op}\n"
+            else:
+                parts = [op]
+                if inst['arg1'] is not None:
+                    parts.append(str(inst['arg1']))
+                if inst['arg2'] is not None:
+                    parts.append(str(inst['arg2']))
+                if inst['result'] is not None:
+                    parts.append("-> " + str(inst['result']))
+                output += "  " + " ".join(parts) + "\n"
         return output
