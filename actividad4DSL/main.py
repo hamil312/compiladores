@@ -303,6 +303,7 @@ def main(): #Función principal donde se instancia el analizador y se realizan l
     if analizador.max_penalty:
         print("Mayor penalización:", analizador.max_penalty[0], "Corredor:", analizador.max_penalty[1].get("CorredorID"))
 
+    #print("## TAC Código Intermedio")
     #print(analizador.ir)
 
     print("## 🔤 TOKENS")
