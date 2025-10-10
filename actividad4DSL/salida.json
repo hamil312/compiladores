@@ -399,6 +399,13 @@
       "QuintaVuelta": 310,
       "PenalizacionSegundos": 10,
       "Descalificado": false
+    },
+    "tiempos_estadisticas": {
+      "promedio": 1983.5,
+      "mediana": 2135.0,
+      "moda": 2145,
+      "desviacion_estandar": 280.06001340982453,
+      "varianza": 78433.61111111111
     }
   }
 }

@@ -5,6 +5,7 @@ from generated.CSVListener import CSVListener
 from semantic_analyzer.IR_Generator import IR_Generator
 import hashlib
 import json
+import statistics
 
 NUMERIC_INT_FIELDS = {
     "Edad",
@@ -192,6 +193,22 @@ class AnalizadorCSV(CSVListener):
                 self.max_penalty = (pen, converted_row) #Se asigna a la penalización como la máxima
 
     def generate_ir(self): #Encargada de generar la representación intermedia en un JSON
+        tiempos_validos = [ #Conjunto de tiempos validos
+            row["TiempoSegundos"] #Seleccionamos la columna de las filas
+            for row in self.rows #Por cada fila en el analizador
+            if isinstance(row.get("TiempoSegundos"), int) and not row.get("Descalificado", False) #Si el tiempo es un valor válido y el corredor no fue descalificado se añade al conjunto
+        ]
+        stats = {} #Creamos un conjunto de estadísticas
+        if tiempos_validos: #Si el conjunto no está vacío
+            stats = { #Llenamos el diccionario con claves y valores
+                "promedio": statistics.mean(tiempos_validos), #Usamos statistics para obtener el promedio del conjunto de tiempos validos y lo asignamos a la clave promedio
+                "mediana": statistics.median(tiempos_validos), #Usamos statistics para obtener la mediana del conjunto y la asignamos a la clave
+                "moda": (statistics.mode(tiempos_validos) 
+                        if len(set(tiempos_validos)) < len(tiempos_validos)
+                        else None), #Usamos statisticas para obtener la moda y la asignamos a la clave aunque solo lo hacemos si el tamaño de tiempos validos convertido a set es menor que el conjunto
+                "desviacion_estandar": statistics.stdev(tiempos_validos) if len(tiempos_validos) > 1 else 0, #Si hay más de un tiempo en el conjunto obtenemos la desviación estandaar
+                "varianza": statistics.variance(tiempos_validos) if len(tiempos_validos) > 1 else 0, #Si hay más de un tiempo en el conjunto obtenemos la varianza
+            }
         return {
             "rows": self.rows, #Se muestran las filas
             "summary": { #El resúmen de los valores obtenidos durante el análisis
@@ -203,7 +220,8 @@ class AnalizadorCSV(CSVListener):
                 "best_per_country": {k: v[1] for k,v in self.best_per_country.items()}, #Se muestra un conjunto, esto iterando a través de las claves y valores del conjunto de mejores por país
                 "youngest": self.youngest[1] if self.youngest else None, #Si existe un corredor más jóven se muestra, sino se muestra None
                 "oldest": self.oldest[1] if self.oldest else None, #Si existe un corredor de mayor edad se muestra, sino se muestra None
-                "max_penalty": self.max_penalty[1] if self.max_penalty else None #Si existe una pena máxima se muestra, sino se muestra None
+                "max_penalty": self.max_penalty[1] if self.max_penalty else None, #Si existe una pena máxima se muestra, sino se muestra None
+                "tiempos_estadisticas": stats, #Adjuntamos el conjunto de estadísticas al JSON
             }
         }
 
@@ -237,6 +255,30 @@ def main(): #Función principal donde se instancia el analizador y se realizan l
     walker.walk(analizador, tree) #A travé de la función walk, recorremo el arbol usando el analizador
 
     ir = analizador.generate_ir() #Creamos una variable que almacene el JSON generado a través de generate_ir
+    tiempos_validos = [ #Conjunto de tiempos validos
+        row["TiempoSegundos"] #Seleccionamos la columna de las filas
+        for row in analizador.rows #Por cada fila en el analizador
+        if isinstance(row.get("TiempoSegundos"), int) and not row.get("Descalificado", False) #Si el tiempo es un valor válido y el corredor no fue descalificado se añade al conjunto
+    ]
+
+    if tiempos_validos: #Si el conjunto no está vacío
+        promedio = statistics.mean(tiempos_validos) #Usamos la libreria statistics para sacar el promedio del conjunto que obtuvimos
+        mediana = statistics.median(tiempos_validos) #Usamos la libreria para sacar la media del conjunto
+        try:
+            moda = statistics.mode(tiempos_validos) #Usamos la libreria para sacar la moda del conjunto
+        except statistics.StatisticsError:
+            moda = "No hay una única moda" #En caso de no encontrar moda lanzar un mensaje
+        desviacion = statistics.stdev(tiempos_validos) if len(tiempos_validos) > 1 else 0 #Verificamos que el conjunto tenga más de un valor para sacar la desviación estándar
+        varianza = statistics.variance(tiempos_validos) if len(tiempos_validos) > 1 else 0 #Verificamos que el conjunto tenga más de un valor para sacar la varianza
+
+        print("\n----- ESTADÍSTICAS DE TIEMPOS -----")
+        print(f"Promedio: {promedio:.2f} segundos") #Imprimimos los valores
+        print(f"Mediana: {mediana:.2f} segundos")
+        print(f"Moda: {moda}")
+        print(f"Desviación estándar: {desviacion:.2f}")
+        print(f"Varianza: {varianza:.2f}")
+    else:
+        print("\nNo hay tiempos válidos para calcular estadísticas.")
     with open("salida.json", "w", encoding="utf-8") as out: #La función open abre un archivo o lo crea en caso de no existir, con el parametro w le decimos que queremos sobrescribir su contenido y definimos el formato, asignamos el resultado a out
         json.dump(ir, out, ensure_ascii=False, indent=2) #A través de la función dump, abrimos el archivo usando out y le escribimos el valor de ir, es decir nuestro JSON, el resto es formato
 
