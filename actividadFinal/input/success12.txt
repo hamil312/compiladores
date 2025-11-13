@@ -1,0 +1,9 @@
+fn both_true(a: bool, b: bool): bool {
+    return a and b;
+}
+
+var x: bool = true;
+var y: bool = true;
+
+result = both_true(x, y) and not false;
+print(result);

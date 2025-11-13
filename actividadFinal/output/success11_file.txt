@@ -1,0 +1,283 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. FUNCTION        -> 'fn'
+   2. ID              -> 'xor'
+   3. LPAREN          -> '('
+   4. ID              -> 'a'
+   5. COLON           -> ':'
+   6. BOOL_TYPE       -> 'bool'
+   7. COMMA           -> ','
+   8. ID              -> 'b'
+   9. COLON           -> ':'
+  10. BOOL_TYPE       -> 'bool'
+  11. RPAREN          -> ')'
+  12. COLON           -> ':'
+  13. BOOL_TYPE       -> 'bool'
+  14. LBRACE          -> '{'
+  15. RETURN          -> 'return'
+  16. LPAREN          -> '('
+  17. ID              -> 'a'
+  18. AND             -> 'and'
+  19. NOT             -> 'not'
+  20. ID              -> 'b'
+  21. RPAREN          -> ')'
+  22. OR              -> 'or'
+  23. LPAREN          -> '('
+  24. NOT             -> 'not'
+  25. ID              -> 'a'
+  26. AND             -> 'and'
+  27. ID              -> 'b'
+  28. RPAREN          -> ')'
+  29. SEMI            -> ';'
+  30. RBRACE          -> '}'
+  31. VAR             -> 'var'
+  32. ID              -> 'u'
+  33. COLON           -> ':'
+  34. BOOL_TYPE       -> 'bool'
+  35. ASSIGN          -> '='
+  36. TRUE            -> 'true'
+  37. SEMI            -> ';'
+  38. VAR             -> 'var'
+  39. ID              -> 'v'
+  40. COLON           -> ':'
+  41. BOOL_TYPE       -> 'bool'
+  42. ASSIGN          -> '='
+  43. FALSE           -> 'false'
+  44. SEMI            -> ';'
+  45. ID              -> 'result'
+  46. ASSIGN          -> '='
+  47. ID              -> 'xor'
+  48. LPAREN          -> '('
+  49. ID              -> 'u'
+  50. COMMA           -> ','
+  51. ID              -> 'v'
+  52. RPAREN          -> ')'
+  53. OR              -> 'or'
+  54. LPAREN          -> '('
+  55. ID              -> 'u'
+  56. AND             -> 'and'
+  57. ID              -> 'v'
+  58. RPAREN          -> ')'
+  59. SEMI            -> ';'
+  60. PRINT           -> 'print'
+  61. LPAREN          -> '('
+  62. ID              -> 'result'
+  63. RPAREN          -> ')'
+  64. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - AND: 3
+  - ASSIGN: 3
+  - BOOL_TYPE: 5
+  - COLON: 5
+  - COMMA: 2
+  - FALSE: 1
+  - FUNCTION: 1
+  - ID: 16
+  - LBRACE: 1
+  - LPAREN: 6
+  - NOT: 2
+  - OR: 2
+  - PRINT: 1
+  - RBRACE: 1
+  - RETURN: 1
+  - RPAREN: 6
+  - SEMI: 5
+  - TRUE: 1
+  - VAR: 2
+[OK] 64 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'fnxor(a:bool,b:bool):bool{return(aandnotb)or(no...'
+  FunctionDefContext: 'fnxor(a:bool,b:bool):bool{return(aandnotb)or(no...'
+    TerminalNodeImpl: 'fn'
+    TerminalNodeImpl: 'xor'
+    TerminalNodeImpl: '('
+    ParamListContext: 'a:bool,b:bool'
+      ParamContext: 'a:bool'
+        TerminalNodeImpl: 'a'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'bool'
+          TerminalNodeImpl: 'bool'
+      TerminalNodeImpl: ','
+      ParamContext: 'b:bool'
+        TerminalNodeImpl: 'b'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'bool'
+          TerminalNodeImpl: 'bool'
+    TerminalNodeImpl: ')'
+    TerminalNodeImpl: ':'
+    ReturnTypeContext: 'bool'
+      TerminalNodeImpl: 'bool'
+    TerminalNodeImpl: '{'
+    ReturnStmtContext: 'return(aandnotb)or(notaandb);'
+      TerminalNodeImpl: 'return'
+      BoolExprContext: '(aandnotb)or(notaandb)'
+        BoolExprContext: '(aandnotb)'
+          BoolTermContext: '(aandnotb)'
+            BoolFactorContext: '(aandnotb)'
+        TerminalNodeImpl: 'or'
+        BoolTermContext: '(notaandb)'
+          BoolFactorContext: '(notaandb)'
+            TerminalNodeImpl: '('
+            BoolExprContext: 'notaandb'
+            TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+    TerminalNodeImpl: '}'
+  StatementContext: 'varu:bool=true;'
+    VarDeclContext: 'varu:bool=true;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'u'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'true'
+        BoolTermContext: 'true'
+          BoolFactorContext: 'true'
+            TerminalNodeImpl: 'true'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varv:bool=false;'
+    VarDeclContext: 'varv:bool=false;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'v'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'false'
+        BoolTermContext: 'false'
+          BoolFactorContext: 'false'
+            TerminalNodeImpl: 'false'
+      TerminalNodeImpl: ';'
+  StatementContext: 'result=xor(u,v)or(uandv);'
+    AssignmentContext: 'result=xor(u,v)or(uandv);'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'xor(u,v)or(uandv)'
+        BoolExprContext: 'xor(u,v)'
+          BoolTermContext: 'xor(u,v)'
+            BoolFactorContext: 'xor(u,v)'
+        TerminalNodeImpl: 'or'
+        BoolTermContext: '(uandv)'
+          BoolFactorContext: '(uandv)'
+            TerminalNodeImpl: '('
+            BoolExprContext: 'uandv'
+            TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+[OK] No se encontraron errores semánticos.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='xor', return_type='bool', params=[a:bool, b:bool], category='function')>
+   <Symbol(name='u', type='bool', category='variable')>
+   <Symbol(name='v', type='bool', category='variable')>
+   <Symbol(name='result', type='bool', category='variable')>
+
+FASE 4: GENERACION DE CODIGO INTERMEDIO (TAC)
+--------------------------------------------------
+## CÓDIGO INTERMEDIO (TAC)
+func_xor:
+  t0 = b == 0
+  t1 = a and t0
+  t2 = a == 0
+  t3 = t2 and b
+  t4 = t1 or t3
+  ret t4
+  goto end_func_xor
+end_func_xor:
+  u = 1
+  v = 0
+  t5 = call xor(u, v)
+  t6 = u and v
+  t7 = t5 or t6
+  result = t7
+  print result
+
+[OK] 16 instrucciones TAC generadas.
+
+FASE 5: GENERACION DE CODIGO PYTHON
+--------------------------------------------------
+Código Python generado y guardado en 'output/success11.py':
+
+==================================================
+# Código generado automáticamente
+
+def xor(a, b):
+    # Variables temporales
+    t0 = 0
+    t1 = 0
+    t2 = 0
+    t3 = 0
+    t4 = 0
+    
+    t0 = b == 0
+    t1 = a and t0
+    t2 = a == 0
+    t3 = t2 and b
+    t4 = t1 or t3
+    return t4
+
+def main():
+    # Variables de usuario
+    result = 0
+    u = 0
+    v = 0
+    
+    u = 1
+    v = 0
+    t5 = xor(u, v)
+    t6 = u and v
+    t7 = t5 or t6
+    result = t7
+    print(result)
+    
+    # Estado final de variables:
+    try:
+        print(f'result = {result}')
+    except NameError:
+        pass
+    try:
+        print(f'u = {u}')
+    except NameError:
+        pass
+    try:
+        print(f'v = {v}')
+    except NameError:
+        pass
+    return 0
+
+if __name__ == '__main__':
+    main()
+==================================================
+
+[OK] Generación de código completada.
+
+RESUMEN DE COMPILACION
+--------------------------------------------------
+✓ Archivo de entrada:    input/success11.txt
+✓ Análisis léxico:       64 tokens generados
+✓ Análisis sintáctico:   Parse tree completado
+✓ Análisis semántico:    0 errores encontrados
+✓ Código intermedio:     16 instrucciones TAC
+✓ Código Python:         Archivo 'output/success11.py' generado
+✓ Log de compilación:    Archivo 'output/success11_file.txt' generado
+--------------------------------------------------
+[SUCCESS] Compilación completada exitosamente.
+

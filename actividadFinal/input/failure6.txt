@@ -1,0 +1,4 @@
+var a: int = 5;
+var b: bool = true;
+result = a and b;
+print(result);

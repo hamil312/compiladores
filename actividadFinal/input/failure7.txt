@@ -1,0 +1,4 @@
+var p: bool = true;
+var q: bool = false;
+result = (p < q);
+print(result);

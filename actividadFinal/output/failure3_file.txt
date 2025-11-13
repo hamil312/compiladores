@@ -1,0 +1,70 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'result'
+   3. COLON           -> ':'
+   4. BOOL_TYPE       -> 'bool'
+   5. ASSIGN          -> '='
+   6. INT             -> '5'
+   7. SEMI            -> ';'
+   8. PRINT           -> 'print'
+   9. LPAREN          -> '('
+  10. ID              -> 'result'
+  11. RPAREN          -> ')'
+  12. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ASSIGN: 1
+  - BOOL_TYPE: 1
+  - COLON: 1
+  - ID: 2
+  - INT: 1
+  - LPAREN: 1
+  - PRINT: 1
+  - RPAREN: 1
+  - SEMI: 2
+  - VAR: 1
+[OK] 12 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'varresult:bool=5;print(result);<EOF>'
+  StatementContext: 'varresult:bool=5;'
+    VarDeclContext: 'varresult:bool=5;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
+      TerminalNodeImpl: '='
+      ArithExprContext: '5'
+        ArithTermContext: '5'
+          ArithFactorContext: '5'
+            TerminalNodeImpl: '5'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+Semantic error: Inicialización de 'result' espera bool, pero se obtuvo int.
+
+⚠️  1 error(es) semántico(s) encontrado(s):
+  1. Inicialización de 'result' espera bool, pero se obtuvo int.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='result', type='bool', category='variable')>
+
+[ABORT] No se puede continuar con errores semánticos.
+

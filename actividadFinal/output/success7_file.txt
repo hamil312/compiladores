@@ -1,0 +1,327 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. FUNCTION        -> 'fn'
+   2. ID              -> 'isGreater'
+   3. LPAREN          -> '('
+   4. ID              -> 'x'
+   5. COLON           -> ':'
+   6. INT_TYPE        -> 'int'
+   7. COMMA           -> ','
+   8. ID              -> 'y'
+   9. COLON           -> ':'
+  10. INT_TYPE        -> 'int'
+  11. RPAREN          -> ')'
+  12. COLON           -> ':'
+  13. BOOL_TYPE       -> 'bool'
+  14. LBRACE          -> '{'
+  15. RETURN          -> 'return'
+  16. ID              -> 'x'
+  17. GT              -> '>'
+  18. ID              -> 'y'
+  19. SEMI            -> ';'
+  20. RBRACE          -> '}'
+  21. VAR             -> 'var'
+  22. ID              -> 'a'
+  23. COLON           -> ':'
+  24. INT_TYPE        -> 'int'
+  25. ASSIGN          -> '='
+  26. INT             -> '10'
+  27. SEMI            -> ';'
+  28. VAR             -> 'var'
+  29. ID              -> 'b'
+  30. COLON           -> ':'
+  31. INT_TYPE        -> 'int'
+  32. ASSIGN          -> '='
+  33. INT             -> '4'
+  34. SEMI            -> ';'
+  35. VAR             -> 'var'
+  36. ID              -> 'c'
+  37. COLON           -> ':'
+  38. INT_TYPE        -> 'int'
+  39. ASSIGN          -> '='
+  40. INT             -> '7'
+  41. SEMI            -> ';'
+  42. VAR             -> 'var'
+  43. ID              -> 'd'
+  44. COLON           -> ':'
+  45. INT_TYPE        -> 'int'
+  46. ASSIGN          -> '='
+  47. INT             -> '1'
+  48. SEMI            -> ';'
+  49. ID              -> 'result'
+  50. ASSIGN          -> '='
+  51. LPAREN          -> '('
+  52. ID              -> 'isGreater'
+  53. LPAREN          -> '('
+  54. ID              -> 'a'
+  55. COMMA           -> ','
+  56. ID              -> 'b'
+  57. RPAREN          -> ')'
+  58. OR              -> 'or'
+  59. ID              -> 'isGreater'
+  60. LPAREN          -> '('
+  61. ID              -> 'b'
+  62. COMMA           -> ','
+  63. ID              -> 'c'
+  64. RPAREN          -> ')'
+  65. RPAREN          -> ')'
+  66. AND             -> 'and'
+  67. NOT             -> 'not'
+  68. LPAREN          -> '('
+  69. ID              -> 'd'
+  70. EQ              -> '=='
+  71. INT             -> '0'
+  72. RPAREN          -> ')'
+  73. SEMI            -> ';'
+  74. PRINT           -> 'print'
+  75. LPAREN          -> '('
+  76. ID              -> 'result'
+  77. RPAREN          -> ')'
+  78. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - AND: 1
+  - ASSIGN: 5
+  - BOOL_TYPE: 1
+  - COLON: 7
+  - COMMA: 3
+  - EQ: 1
+  - FUNCTION: 1
+  - GT: 1
+  - ID: 18
+  - INT: 5
+  - INT_TYPE: 6
+  - LBRACE: 1
+  - LPAREN: 6
+  - NOT: 1
+  - OR: 1
+  - PRINT: 1
+  - RBRACE: 1
+  - RETURN: 1
+  - RPAREN: 6
+  - SEMI: 7
+  - VAR: 4
+[OK] 78 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'fnisGreater(x:int,y:int):bool{returnx>y;}vara:i...'
+  FunctionDefContext: 'fnisGreater(x:int,y:int):bool{returnx>y;}'
+    TerminalNodeImpl: 'fn'
+    TerminalNodeImpl: 'isGreater'
+    TerminalNodeImpl: '('
+    ParamListContext: 'x:int,y:int'
+      ParamContext: 'x:int'
+        TerminalNodeImpl: 'x'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+      TerminalNodeImpl: ','
+      ParamContext: 'y:int'
+        TerminalNodeImpl: 'y'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+    TerminalNodeImpl: ')'
+    TerminalNodeImpl: ':'
+    ReturnTypeContext: 'bool'
+      TerminalNodeImpl: 'bool'
+    TerminalNodeImpl: '{'
+    ReturnStmtContext: 'returnx>y;'
+      TerminalNodeImpl: 'return'
+      BoolExprContext: 'x>y'
+        BoolTermContext: 'x>y'
+          BoolFactorContext: 'x>y'
+            ComparisonContext: 'x>y'
+      TerminalNodeImpl: ';'
+    TerminalNodeImpl: '}'
+  StatementContext: 'vara:int=10;'
+    VarDeclContext: 'vara:int=10;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '10'
+        ArithTermContext: '10'
+          ArithFactorContext: '10'
+            TerminalNodeImpl: '10'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varb:int=4;'
+    VarDeclContext: 'varb:int=4;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'b'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '4'
+        ArithTermContext: '4'
+          ArithFactorContext: '4'
+            TerminalNodeImpl: '4'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varc:int=7;'
+    VarDeclContext: 'varc:int=7;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'c'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '7'
+        ArithTermContext: '7'
+          ArithFactorContext: '7'
+            TerminalNodeImpl: '7'
+      TerminalNodeImpl: ';'
+  StatementContext: 'vard:int=1;'
+    VarDeclContext: 'vard:int=1;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'd'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '1'
+        ArithTermContext: '1'
+          ArithFactorContext: '1'
+            TerminalNodeImpl: '1'
+      TerminalNodeImpl: ';'
+  StatementContext: 'result=(isGreater(a,b)orisGreater(b,c))andnot(d...'
+    AssignmentContext: 'result=(isGreater(a,b)orisGreater(b,c))andnot(d...'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: '(isGreater(a,b)orisGreater(b,c))andnot(d==0)'
+        BoolTermContext: '(isGreater(a,b)orisGreater(b,c))andnot(d==0)'
+          BoolTermContext: '(isGreater(a,b)orisGreater(b,c))'
+            BoolFactorContext: '(isGreater(a,b)orisGreater(b,c))'
+          TerminalNodeImpl: 'and'
+          BoolFactorContext: 'not(d==0)'
+            TerminalNodeImpl: 'not'
+            BoolFactorContext: '(d==0)'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+[OK] No se encontraron errores semánticos.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='isGreater', return_type='bool', params=[x:int, y:int], category='function')>
+   <Symbol(name='a', type='int', category='variable')>
+   <Symbol(name='b', type='int', category='variable')>
+   <Symbol(name='c', type='int', category='variable')>
+   <Symbol(name='d', type='int', category='variable')>
+   <Symbol(name='result', type='bool', category='variable')>
+
+FASE 4: GENERACION DE CODIGO INTERMEDIO (TAC)
+--------------------------------------------------
+## CÓDIGO INTERMEDIO (TAC)
+func_isGreater:
+  t0 = x > y
+  ret t0
+  goto end_func_isGreater
+end_func_isGreater:
+  a = 10
+  b = 4
+  c = 7
+  d = 1
+  t1 = call isGreater(a, b)
+  t2 = call isGreater(b, c)
+  t3 = t1 or t2
+  t4 = d == 0
+  t5 = t4 == 0
+  t6 = t3 and t5
+  result = t6
+  print result
+
+[OK] 17 instrucciones TAC generadas.
+
+FASE 5: GENERACION DE CODIGO PYTHON
+--------------------------------------------------
+Código Python generado y guardado en 'output/success7.py':
+
+==================================================
+# Código generado automáticamente
+
+def isGreater(x, y):
+    # Variables temporales
+    t0 = 0
+    
+    t0 = x > y
+    return t0
+
+def main():
+    # Variables de usuario
+    a = 0
+    b = 0
+    c = 0
+    d = 0
+    result = 0
+    
+    a = 10
+    b = 4
+    c = 7
+    d = 1
+    t1 = isGreater(a, b)
+    t2 = isGreater(b, c)
+    t3 = t1 or t2
+    t4 = d == 0
+    t5 = t4 == 0
+    t6 = t3 and t5
+    result = t6
+    print(result)
+    
+    # Estado final de variables:
+    try:
+        print(f'a = {a}')
+    except NameError:
+        pass
+    try:
+        print(f'b = {b}')
+    except NameError:
+        pass
+    try:
+        print(f'c = {c}')
+    except NameError:
+        pass
+    try:
+        print(f'd = {d}')
+    except NameError:
+        pass
+    try:
+        print(f'result = {result}')
+    except NameError:
+        pass
+    return 0
+
+if __name__ == '__main__':
+    main()
+==================================================
+
+[OK] Generación de código completada.
+
+RESUMEN DE COMPILACION
+--------------------------------------------------
+✓ Archivo de entrada:    input/success7.txt
+✓ Análisis léxico:       78 tokens generados
+✓ Análisis sintáctico:   Parse tree completado
+✓ Análisis semántico:    0 errores encontrados
+✓ Código intermedio:     17 instrucciones TAC
+✓ Código Python:         Archivo 'output/success7.py' generado
+✓ Log de compilación:    Archivo 'output/success7_file.txt' generado
+--------------------------------------------------
+[SUCCESS] Compilación completada exitosamente.
+

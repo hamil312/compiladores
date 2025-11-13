@@ -1,0 +1,11 @@
+fn isGreater(x: int, y: int): bool {
+    return x > y;
+}
+
+var a: int = 10;
+var b: int = 4;
+var c: int = 7;
+var d: int = 1;
+
+result = (isGreater(a, b) or isGreater(b, c)) and not (d == 0);
+print(result);

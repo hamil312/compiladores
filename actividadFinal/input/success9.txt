@@ -1,0 +1,9 @@
+var a: int = 0;
+var b: int = 3;
+
+while (a < 5) {
+    a = a + 1;
+}
+
+result = (a == 5) and (b < 10);
+print(result);

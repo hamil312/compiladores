@@ -1,0 +1,231 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'a'
+   3. COLON           -> ':'
+   4. INT_TYPE        -> 'int'
+   5. ASSIGN          -> '='
+   6. INT             -> '0'
+   7. SEMI            -> ';'
+   8. VAR             -> 'var'
+   9. ID              -> 'b'
+  10. COLON           -> ':'
+  11. INT_TYPE        -> 'int'
+  12. ASSIGN          -> '='
+  13. INT             -> '3'
+  14. SEMI            -> ';'
+  15. WHILE           -> 'while'
+  16. LPAREN          -> '('
+  17. ID              -> 'a'
+  18. LT              -> '<'
+  19. INT             -> '5'
+  20. RPAREN          -> ')'
+  21. LBRACE          -> '{'
+  22. ID              -> 'a'
+  23. ASSIGN          -> '='
+  24. ID              -> 'a'
+  25. ADD             -> '+'
+  26. INT             -> '1'
+  27. SEMI            -> ';'
+  28. RBRACE          -> '}'
+  29. ID              -> 'result'
+  30. ASSIGN          -> '='
+  31. LPAREN          -> '('
+  32. ID              -> 'a'
+  33. EQ              -> '=='
+  34. INT             -> '5'
+  35. RPAREN          -> ')'
+  36. AND             -> 'and'
+  37. LPAREN          -> '('
+  38. ID              -> 'b'
+  39. LT              -> '<'
+  40. INT             -> '10'
+  41. RPAREN          -> ')'
+  42. SEMI            -> ';'
+  43. PRINT           -> 'print'
+  44. LPAREN          -> '('
+  45. ID              -> 'result'
+  46. RPAREN          -> ')'
+  47. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ADD: 1
+  - AND: 1
+  - ASSIGN: 4
+  - COLON: 2
+  - EQ: 1
+  - ID: 9
+  - INT: 6
+  - INT_TYPE: 2
+  - LBRACE: 1
+  - LPAREN: 4
+  - LT: 2
+  - PRINT: 1
+  - RBRACE: 1
+  - RPAREN: 4
+  - SEMI: 5
+  - VAR: 2
+  - WHILE: 1
+[OK] 47 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'vara:int=0;varb:int=3;while(a<5){a=a+1;}result=...'
+  StatementContext: 'vara:int=0;'
+    VarDeclContext: 'vara:int=0;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '0'
+        ArithTermContext: '0'
+          ArithFactorContext: '0'
+            TerminalNodeImpl: '0'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varb:int=3;'
+    VarDeclContext: 'varb:int=3;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'b'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '3'
+        ArithTermContext: '3'
+          ArithFactorContext: '3'
+            TerminalNodeImpl: '3'
+      TerminalNodeImpl: ';'
+  StatementContext: 'while(a<5){a=a+1;}'
+    WhileStmtContext: 'while(a<5){a=a+1;}'
+      TerminalNodeImpl: 'while'
+      TerminalNodeImpl: '('
+      BoolExprContext: 'a<5'
+        BoolTermContext: 'a<5'
+          BoolFactorContext: 'a<5'
+            ComparisonContext: 'a<5'
+      TerminalNodeImpl: ')'
+      BlockContext: '{a=a+1;}'
+        TerminalNodeImpl: '{'
+        StatementContext: 'a=a+1;'
+          AssignmentContext: 'a=a+1;'
+            TerminalNodeImpl: 'a'
+            TerminalNodeImpl: '='
+            ArithExprContext: 'a+1'
+            TerminalNodeImpl: ';'
+        TerminalNodeImpl: '}'
+  StatementContext: 'result=(a==5)and(b<10);'
+    AssignmentContext: 'result=(a==5)and(b<10);'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: '(a==5)and(b<10)'
+        BoolTermContext: '(a==5)and(b<10)'
+          BoolTermContext: '(a==5)'
+            BoolFactorContext: '(a==5)'
+          TerminalNodeImpl: 'and'
+          BoolFactorContext: '(b<10)'
+            TerminalNodeImpl: '('
+            BoolExprContext: 'b<10'
+            TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+[OK] No se encontraron errores semánticos.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='a', type='int', category='variable')>
+   <Symbol(name='b', type='int', category='variable')>
+   <Symbol(name='result', type='bool', category='variable')>
+
+FASE 4: GENERACION DE CODIGO INTERMEDIO (TAC)
+--------------------------------------------------
+## CÓDIGO INTERMEDIO (TAC)
+  a = 0
+  b = 3
+L0:
+  t0 = a < 5
+  if_false t0 goto L1
+  t1 = a + 1
+  a = t1
+  goto L0
+L1:
+  t2 = a == 5
+  t3 = b < 10
+  t4 = t2 and t3
+  result = t4
+  print result
+
+[OK] 14 instrucciones TAC generadas.
+
+FASE 5: GENERACION DE CODIGO PYTHON
+--------------------------------------------------
+Código Python generado y guardado en 'output/success9.py':
+
+==================================================
+# Código generado automáticamente
+
+def main():
+    # Variables de usuario
+    a = 0
+    b = 0
+    result = 0
+    
+    a = 0
+    b = 3
+    while a < 5:
+        t1 = a + 1
+        a = t1
+    t2 = a == 5
+    t3 = b < 10
+    t4 = t2 and t3
+    result = t4
+    print(result)
+    
+    # Estado final de variables:
+    try:
+        print(f'a = {a}')
+    except NameError:
+        pass
+    try:
+        print(f'b = {b}')
+    except NameError:
+        pass
+    try:
+        print(f'result = {result}')
+    except NameError:
+        pass
+    return 0
+
+if __name__ == '__main__':
+    main()
+==================================================
+
+[OK] Generación de código completada.
+
+RESUMEN DE COMPILACION
+--------------------------------------------------
+✓ Archivo de entrada:    input/success9.txt
+✓ Análisis léxico:       47 tokens generados
+✓ Análisis sintáctico:   Parse tree completado
+✓ Análisis semántico:    0 errores encontrados
+✓ Código intermedio:     14 instrucciones TAC
+✓ Código Python:         Archivo 'output/success9.py' generado
+✓ Log de compilación:    Archivo 'output/success9_file.txt' generado
+--------------------------------------------------
+[SUCCESS] Compilación completada exitosamente.
+

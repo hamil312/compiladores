@@ -1,0 +1,4 @@
+var p: bool = true;
+var q: bool = false;
+var r: int = p + q;
+print(r);

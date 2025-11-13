@@ -1,0 +1,53 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'a'
+   3. COLON           -> ':'
+   4. INT_TYPE        -> 'int'
+   5. ASSIGN          -> '='
+   6. INT             -> '2'
+   7. SEMI            -> ';'
+   8. VAR             -> 'var'
+   9. ID              -> 'b'
+  10. COLON           -> ':'
+  11. INT_TYPE        -> 'int'
+  12. ASSIGN          -> '='
+  13. INT             -> '3'
+  14. SEMI            -> ';'
+  15. ID              -> 'result'
+  16. ASSIGN          -> '='
+  17. ID              -> 'a'
+  18. ADD             -> '+'
+  19. ID              -> 'b'
+  20. AND             -> 'and'
+  21. TRUE            -> 'true'
+  22. SEMI            -> ';'
+  23. PRINT           -> 'print'
+  24. LPAREN          -> '('
+  25. ID              -> 'result'
+  26. RPAREN          -> ')'
+  27. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ADD: 1
+  - AND: 1
+  - ASSIGN: 3
+  - COLON: 2
+  - ID: 6
+  - INT: 2
+  - INT_TYPE: 2
+  - LPAREN: 1
+  - PRINT: 1
+  - RPAREN: 1
+  - SEMI: 4
+  - TRUE: 1
+  - VAR: 2
+[OK] 27 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+
+❌ Error de sintaxis en la línea 4:15 - no viable alternative at input 'a+band'
+[ABORT] Compilación abortada.
+

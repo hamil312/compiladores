@@ -6,6 +6,8 @@ class PythonCodeGenerator:
         self.current_function = None  # función actual siendo generada
         self.symbol_table = None  # opcional, inyectada desde main.py
         self._skip_until = -1  # índice hasta el que ya se emitió código (para evitar duplicados)
+        # mapas para posponer la emisión de condiciones temporales usadas por while/if
+        self._deferred_conditions = {}  # temp -> expression string
 
     def generate_from_tac(self, tac_instructions, symbol_table=None):
         """Genera código Python desde TAC, reconstruyendo if/while estructurados y funciones.
@@ -207,8 +209,15 @@ class PythonCodeGenerator:
         """Procesa una instrucción TAC individual."""
         op = inst.get('op')
 
-        # Operaciones binarias
+        # Operaciones binarias y comparaciones
         if op in ['+', '-', '*', '/', '<', '>', '<=', '>=', '==', '!=', 'and', 'or']:
+            # Si esta temp se usa inmediatamente en un if_false_goto siguiente,
+            # posponemos su emisión (la _process_while/_process_if la reconstruirán).
+            next_inst = instrs[idx + 1] if idx + 1 < len(instrs) else None
+            if next_inst and next_inst.get('op') == 'if_false_goto' and next_inst.get('arg1') == inst.get('result'):
+                expr = f"{inst.get('arg1')} {op} {inst.get('arg2')}"
+                self._deferred_conditions[inst.get('result')] = expr
+                return None
             return f"{inst.get('result')} = {inst.get('arg1')} {op} {inst.get('arg2')}"
 
         # Asignación
@@ -227,25 +236,78 @@ class PythonCodeGenerator:
             result = inst.get('result')
             return f"{result} = {func_name}({args_str})"
 
-        # Control de flujo (if/while reconstruidos en _process_control_flow)
+        # Control de flujo: diferenciar if de while
         elif op == 'if_false_goto':
-            return self._process_if(instrs, idx, label_map)
+            # Detectar si es while o if: if tiene goto antes de etiqueta else
+            # while tiene goto hacia el inicio (start label)
+            inst_result = inst.get('result')
+            idx_result = label_map.get(inst_result)
+            
+            # Buscar si hay un goto hacia atrás (indica while)
+            is_while = False
+            if idx_result is not None and idx < idx_result:
+                # Buscar goto antes de idx_result
+                for i in range(idx + 1, min(idx_result + 1, len(instrs))):
+                    if instrs[i].get('op') == 'goto':
+                        goto_target = instrs[i].get('result')
+                        goto_idx = label_map.get(goto_target)
+                        if goto_idx is not None and goto_idx < idx:
+                            is_while = True
+                        break
+            
+            if is_while:
+                return self._process_while(instrs, idx, label_map)
+            else:
+                return self._process_if(instrs, idx, label_map)
 
-        # Return: solo emitir dentro de una función; fuera de funciones ignorar
+        # Return
         elif op == 'ret':
             if self.current_function:
                 return f"return {inst.get('arg1')}"
             else:
-                # ret fuera de función (no debería ocurrir si saltamos rangos), ignorar
                 return None
 
-        # Etiquetas (ignorar, ya procesadas)
+        # Etiquetas (ignorar)
         elif isinstance(op, str) and op.endswith(':'):
             return None
 
         # Gotos (ignorar, reconstruidos en if/while)
         elif op == 'goto':
             return None
+
+        return None
+
+    def _process_while(self, instrs, idx, label_map):
+        """Procesa un while desde una instrucción if_false_goto."""
+        inst = instrs[idx]
+        cond = inst.get('arg1')
+        end_label = inst.get('result')
+        end_idx = label_map.get(end_label)
+
+        if end_idx is None:
+            return None
+
+        # Buscar donde termina el body (antes del goto que vuelve al inicio)
+        body_end = end_idx
+        for i in range(idx + 1, end_idx):
+            if instrs[i].get('op') == 'goto':
+                body_end = i
+                break
+
+        # Emitir while con la condición directa (sin variable temporal)
+        # Si la condición es un temporal diferido, usar la expresión original
+        cond_expr = self._deferred_conditions.pop(cond, None) if isinstance(cond, str) else None
+        cond_to_emit = cond_expr if cond_expr is not None else cond
+        self.emit(f"while {cond_to_emit}:")
+        self.indent()
+
+        # Emitir el cuerpo del loop
+        self._emit_range(instrs, idx + 1, body_end, label_map)
+        self.dedent()
+
+        # Marcar hasta donde emitimos
+        if isinstance(end_idx, int):
+            self._skip_until = max(self._skip_until, end_idx)
 
         return None
 

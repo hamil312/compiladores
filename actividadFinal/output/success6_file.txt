@@ -1,0 +1,230 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'a'
+   3. COLON           -> ':'
+   4. INT_TYPE        -> 'int'
+   5. ASSIGN          -> '='
+   6. INT             -> '5'
+   7. SEMI            -> ';'
+   8. VAR             -> 'var'
+   9. ID              -> 'b'
+  10. COLON           -> ':'
+  11. INT_TYPE        -> 'int'
+  12. ASSIGN          -> '='
+  13. INT             -> '3'
+  14. SEMI            -> ';'
+  15. VAR             -> 'var'
+  16. ID              -> 'c'
+  17. COLON           -> ':'
+  18. INT_TYPE        -> 'int'
+  19. ASSIGN          -> '='
+  20. INT             -> '2'
+  21. SEMI            -> ';'
+  22. ID              -> 'result'
+  23. ASSIGN          -> '='
+  24. LPAREN          -> '('
+  25. ID              -> 'a'
+  26. ADD             -> '+'
+  27. ID              -> 'b'
+  28. MUL             -> '*'
+  29. SUB             -> '-'
+  30. ID              -> 'c'
+  31. GT              -> '>'
+  32. INT             -> '10'
+  33. RPAREN          -> ')'
+  34. AND             -> 'and'
+  35. NOT             -> 'not'
+  36. LPAREN          -> '('
+  37. ID              -> 'c'
+  38. EQ              -> '=='
+  39. INT             -> '2'
+  40. RPAREN          -> ')'
+  41. SEMI            -> ';'
+  42. PRINT           -> 'print'
+  43. LPAREN          -> '('
+  44. ID              -> 'result'
+  45. RPAREN          -> ')'
+  46. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ADD: 1
+  - AND: 1
+  - ASSIGN: 4
+  - COLON: 3
+  - EQ: 1
+  - GT: 1
+  - ID: 9
+  - INT: 5
+  - INT_TYPE: 3
+  - LPAREN: 3
+  - MUL: 1
+  - NOT: 1
+  - PRINT: 1
+  - RPAREN: 3
+  - SEMI: 5
+  - SUB: 1
+  - VAR: 3
+[OK] 46 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'vara:int=5;varb:int=3;varc:int=2;result=(a+b*-c...'
+  StatementContext: 'vara:int=5;'
+    VarDeclContext: 'vara:int=5;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '5'
+        ArithTermContext: '5'
+          ArithFactorContext: '5'
+            TerminalNodeImpl: '5'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varb:int=3;'
+    VarDeclContext: 'varb:int=3;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'b'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '3'
+        ArithTermContext: '3'
+          ArithFactorContext: '3'
+            TerminalNodeImpl: '3'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varc:int=2;'
+    VarDeclContext: 'varc:int=2;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'c'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '2'
+        ArithTermContext: '2'
+          ArithFactorContext: '2'
+            TerminalNodeImpl: '2'
+      TerminalNodeImpl: ';'
+  StatementContext: 'result=(a+b*-c>10)andnot(c==2);'
+    AssignmentContext: 'result=(a+b*-c>10)andnot(c==2);'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: '(a+b*-c>10)andnot(c==2)'
+        BoolTermContext: '(a+b*-c>10)andnot(c==2)'
+          BoolTermContext: '(a+b*-c>10)'
+            BoolFactorContext: '(a+b*-c>10)'
+          TerminalNodeImpl: 'and'
+          BoolFactorContext: 'not(c==2)'
+            TerminalNodeImpl: 'not'
+            BoolFactorContext: '(c==2)'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+[OK] No se encontraron errores semánticos.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='a', type='int', category='variable')>
+   <Symbol(name='b', type='int', category='variable')>
+   <Symbol(name='c', type='int', category='variable')>
+   <Symbol(name='result', type='bool', category='variable')>
+
+FASE 4: GENERACION DE CODIGO INTERMEDIO (TAC)
+--------------------------------------------------
+## CÓDIGO INTERMEDIO (TAC)
+  a = 5
+  b = 3
+  c = 2
+  t0 = 0 - c
+  t1 = b * t0
+  t2 = a + t1
+  t3 = t2 > 10
+  t4 = c == 2
+  t5 = t4 == 0
+  t6 = t3 and t5
+  result = t6
+  print result
+
+[OK] 12 instrucciones TAC generadas.
+
+FASE 5: GENERACION DE CODIGO PYTHON
+--------------------------------------------------
+Código Python generado y guardado en 'output/success6.py':
+
+==================================================
+# Código generado automáticamente
+
+def main():
+    # Variables de usuario
+    a = 0
+    b = 0
+    c = 0
+    result = 0
+    
+    a = 5
+    b = 3
+    c = 2
+    t0 = 0 - c
+    t1 = b * t0
+    t2 = a + t1
+    t3 = t2 > 10
+    t4 = c == 2
+    t5 = t4 == 0
+    t6 = t3 and t5
+    result = t6
+    print(result)
+    
+    # Estado final de variables:
+    try:
+        print(f'a = {a}')
+    except NameError:
+        pass
+    try:
+        print(f'b = {b}')
+    except NameError:
+        pass
+    try:
+        print(f'c = {c}')
+    except NameError:
+        pass
+    try:
+        print(f'result = {result}')
+    except NameError:
+        pass
+    return 0
+
+if __name__ == '__main__':
+    main()
+==================================================
+
+[OK] Generación de código completada.
+
+RESUMEN DE COMPILACION
+--------------------------------------------------
+✓ Archivo de entrada:    input/success6.txt
+✓ Análisis léxico:       46 tokens generados
+✓ Análisis sintáctico:   Parse tree completado
+✓ Análisis semántico:    0 errores encontrados
+✓ Código intermedio:     12 instrucciones TAC
+✓ Código Python:         Archivo 'output/success6.py' generado
+✓ Log de compilación:    Archivo 'output/success6_file.txt' generado
+--------------------------------------------------
+[SUCCESS] Compilación completada exitosamente.
+

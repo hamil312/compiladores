@@ -1,0 +1,125 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. FUNCTION        -> 'fn'
+   2. ID              -> 'add'
+   3. LPAREN          -> '('
+   4. ID              -> 'x'
+   5. COLON           -> ':'
+   6. INT_TYPE        -> 'int'
+   7. COMMA           -> ','
+   8. ID              -> 'y'
+   9. COLON           -> ':'
+  10. INT_TYPE        -> 'int'
+  11. RPAREN          -> ')'
+  12. COLON           -> ':'
+  13. INT_TYPE        -> 'int'
+  14. LBRACE          -> '{'
+  15. RETURN          -> 'return'
+  16. ID              -> 'x'
+  17. ADD             -> '+'
+  18. ID              -> 'y'
+  19. SEMI            -> ';'
+  20. RBRACE          -> '}'
+  21. ID              -> 'result'
+  22. ASSIGN          -> '='
+  23. ID              -> 'add'
+  24. LPAREN          -> '('
+  25. INT             -> '5'
+  26. RPAREN          -> ')'
+  27. SEMI            -> ';'
+  28. PRINT           -> 'print'
+  29. LPAREN          -> '('
+  30. ID              -> 'result'
+  31. RPAREN          -> ')'
+  32. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ADD: 1
+  - ASSIGN: 1
+  - COLON: 3
+  - COMMA: 1
+  - FUNCTION: 1
+  - ID: 8
+  - INT: 1
+  - INT_TYPE: 3
+  - LBRACE: 1
+  - LPAREN: 3
+  - PRINT: 1
+  - RBRACE: 1
+  - RETURN: 1
+  - RPAREN: 3
+  - SEMI: 3
+[OK] 32 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'fnadd(x:int,y:int):int{returnx+y;}result=add(5)...'
+  FunctionDefContext: 'fnadd(x:int,y:int):int{returnx+y;}'
+    TerminalNodeImpl: 'fn'
+    TerminalNodeImpl: 'add'
+    TerminalNodeImpl: '('
+    ParamListContext: 'x:int,y:int'
+      ParamContext: 'x:int'
+        TerminalNodeImpl: 'x'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+      TerminalNodeImpl: ','
+      ParamContext: 'y:int'
+        TerminalNodeImpl: 'y'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+    TerminalNodeImpl: ')'
+    TerminalNodeImpl: ':'
+    ReturnTypeContext: 'int'
+      TerminalNodeImpl: 'int'
+    TerminalNodeImpl: '{'
+    ReturnStmtContext: 'returnx+y;'
+      TerminalNodeImpl: 'return'
+      ArithExprContext: 'x+y'
+        ArithExprContext: 'x'
+          ArithTermContext: 'x'
+            ArithFactorContext: 'x'
+        TerminalNodeImpl: '+'
+        ArithTermContext: 'y'
+          ArithFactorContext: 'y'
+            TerminalNodeImpl: 'y'
+      TerminalNodeImpl: ';'
+    TerminalNodeImpl: '}'
+  StatementContext: 'result=add(5);'
+    AssignmentContext: 'result=add(5);'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'add(5)'
+        BoolTermContext: 'add(5)'
+          BoolFactorContext: 'add(5)'
+            FunctionCallContext: 'add(5)'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+Semantic error: Función 'add' espera 2 argumentos, pero se proporcionaron 1.
+
+⚠️  1 error(es) semántico(s) encontrado(s):
+  1. Función 'add' espera 2 argumentos, pero se proporcionaron 1.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='add', return_type='int', params=[x:int, y:int], category='function')>
+   <Symbol(name='result', type='error_type', category='variable')>
+
+[ABORT] No se puede continuar con errores semánticos.
+

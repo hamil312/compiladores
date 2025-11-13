@@ -1,0 +1,97 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. FUNCTION        -> 'fn'
+   2. ID              -> 'getValue'
+   3. LPAREN          -> '('
+   4. RPAREN          -> ')'
+   5. COLON           -> ':'
+   6. INT_TYPE        -> 'int'
+   7. LBRACE          -> '{'
+   8. RETURN          -> 'return'
+   9. TRUE            -> 'true'
+  10. SEMI            -> ';'
+  11. RBRACE          -> '}'
+  12. ID              -> 'result'
+  13. ASSIGN          -> '='
+  14. ID              -> 'getValue'
+  15. LPAREN          -> '('
+  16. RPAREN          -> ')'
+  17. SEMI            -> ';'
+  18. PRINT           -> 'print'
+  19. LPAREN          -> '('
+  20. ID              -> 'result'
+  21. RPAREN          -> ')'
+  22. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ASSIGN: 1
+  - COLON: 1
+  - FUNCTION: 1
+  - ID: 4
+  - INT_TYPE: 1
+  - LBRACE: 1
+  - LPAREN: 3
+  - PRINT: 1
+  - RBRACE: 1
+  - RETURN: 1
+  - RPAREN: 3
+  - SEMI: 3
+  - TRUE: 1
+[OK] 22 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'fngetValue():int{returntrue;}result=getValue();...'
+  FunctionDefContext: 'fngetValue():int{returntrue;}'
+    TerminalNodeImpl: 'fn'
+    TerminalNodeImpl: 'getValue'
+    TerminalNodeImpl: '('
+    TerminalNodeImpl: ')'
+    TerminalNodeImpl: ':'
+    ReturnTypeContext: 'int'
+      TerminalNodeImpl: 'int'
+    TerminalNodeImpl: '{'
+    ReturnStmtContext: 'returntrue;'
+      TerminalNodeImpl: 'return'
+      BoolExprContext: 'true'
+        BoolTermContext: 'true'
+          BoolFactorContext: 'true'
+            TerminalNodeImpl: 'true'
+      TerminalNodeImpl: ';'
+    TerminalNodeImpl: '}'
+  StatementContext: 'result=getValue();'
+    AssignmentContext: 'result=getValue();'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'getValue()'
+        BoolTermContext: 'getValue()'
+          BoolFactorContext: 'getValue()'
+            FunctionCallContext: 'getValue()'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+Semantic error: En función 'getValue': return espera int, pero se proporciona bool.
+
+⚠️  1 error(es) semántico(s) encontrado(s):
+  1. En función 'getValue': return espera int, pero se proporciona bool.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='getValue', return_type='int', params=[], category='function')>
+   <Symbol(name='result', type='int', category='variable')>
+
+[ABORT] No se puede continuar con errores semánticos.
+

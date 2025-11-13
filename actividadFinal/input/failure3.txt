@@ -1,0 +1,2 @@
+var result: bool = 5;
+print(result);

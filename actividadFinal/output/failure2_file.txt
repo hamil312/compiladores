@@ -1,0 +1,70 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'a'
+   3. COLON           -> ':'
+   4. INT_TYPE        -> 'int'
+   5. ASSIGN          -> '='
+   6. TRUE            -> 'true'
+   7. SEMI            -> ';'
+   8. PRINT           -> 'print'
+   9. LPAREN          -> '('
+  10. ID              -> 'a'
+  11. RPAREN          -> ')'
+  12. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ASSIGN: 1
+  - COLON: 1
+  - ID: 2
+  - INT_TYPE: 1
+  - LPAREN: 1
+  - PRINT: 1
+  - RPAREN: 1
+  - SEMI: 2
+  - TRUE: 1
+  - VAR: 1
+[OK] 12 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'vara:int=true;print(a);<EOF>'
+  StatementContext: 'vara:int=true;'
+    VarDeclContext: 'vara:int=true;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'true'
+        BoolTermContext: 'true'
+          BoolFactorContext: 'true'
+            TerminalNodeImpl: 'true'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(a);'
+    PrintStmtContext: 'print(a);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+Semantic error: Inicialización de 'a' espera int, pero se obtuvo bool.
+
+⚠️  1 error(es) semántico(s) encontrado(s):
+  1. Inicialización de 'a' espera int, pero se obtuvo bool.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='a', type='int', category='variable')>
+
+[ABORT] No se puede continuar con errores semánticos.
+

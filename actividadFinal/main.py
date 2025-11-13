@@ -34,7 +34,7 @@ def main():
     os.makedirs("output", exist_ok=True)
     
     # Buscar primer archivo .txt en la carpeta input/
-    input_file = "input/success5.txt"
+    input_file = "input/failure12.txt"
     input_filename = os.path.splitext(os.path.basename(input_file))[0]
     
     # Generar nombres de salida
@@ -176,6 +176,11 @@ def main():
         print("-" * 50)
         visitor.table.dump()
         print()
+        
+        # ✅ NUEVO: Si hay errores semánticos, abortar aquí
+        if visitor.table.errors:
+            print("[ABORT] No se puede continuar con errores semánticos.\n")
+            return 1
                 
         # ==========================================
         # FASE 4: GENERACION DE CODIGO INTERMEDIO

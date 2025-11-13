@@ -214,11 +214,14 @@ class SemanticVisitor(gramaticaVisitor):
 
     # whileStmt : WHILE LPAREN boolExpr RPAREN block
     def visitWhileStmt(self, ctx:gramaticaParser.WhileStmtContext):
-        cond_ctx = ctx.boolExpr()
         start = self.ir.new_label()
         end = self.ir.new_label()
 
+        # Emitir etiqueta del inicio del loop
         self.ir.emit_label(start)
+        
+        # Evaluar condición DENTRO del loop (se re-evalúa cada iteración)
+        cond_ctx = ctx.boolExpr()
         cond_res = self.visit(cond_ctx)
         if cond_res is None:
             cond_type, cond_addr = ('error_type', None)
@@ -228,11 +231,18 @@ class SemanticVisitor(gramaticaVisitor):
         if cond_type != 'bool' and cond_type != 'error_type':
             self.table.record_error("Condición del 'while' debe ser booleana.")
 
-        self.ir.add_instruction('if_false_goto', cond_addr, result=end)
+        # Si condición es falsa, saltar al final
+        self.ir.add_instruction('if_false_goto', arg1=cond_addr, result=end)
+        
+        # Cuerpo del loop
         self.table.enter_scope()
         self.visit(ctx.block())
         self.table.exit_scope()
+        
+        # Saltar de vuelta al inicio (para re-evaluar condición)
         self.ir.add_instruction('goto', result=start)
+        
+        # Etiqueta del final
         self.ir.emit_label(end)
         return None
 

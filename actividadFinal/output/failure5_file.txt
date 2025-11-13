@@ -1,0 +1,91 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'a'
+   3. COLON           -> ':'
+   4. INT_TYPE        -> 'int'
+   5. ASSIGN          -> '='
+   6. INT             -> '5'
+   7. SEMI            -> ';'
+   8. IF              -> 'if'
+   9. LPAREN          -> '('
+  10. ID              -> 'a'
+  11. RPAREN          -> ')'
+  12. LBRACE          -> '{'
+  13. PRINT           -> 'print'
+  14. LPAREN          -> '('
+  15. ID              -> 'a'
+  16. RPAREN          -> ')'
+  17. SEMI            -> ';'
+  18. RBRACE          -> '}'
+
+Resumen de tipos de token:
+  - ASSIGN: 1
+  - COLON: 1
+  - ID: 3
+  - IF: 1
+  - INT: 1
+  - INT_TYPE: 1
+  - LBRACE: 1
+  - LPAREN: 2
+  - PRINT: 1
+  - RBRACE: 1
+  - RPAREN: 2
+  - SEMI: 2
+  - VAR: 1
+[OK] 18 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'vara:int=5;if(a){print(a);}<EOF>'
+  StatementContext: 'vara:int=5;'
+    VarDeclContext: 'vara:int=5;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '5'
+        ArithTermContext: '5'
+          ArithFactorContext: '5'
+            TerminalNodeImpl: '5'
+      TerminalNodeImpl: ';'
+  StatementContext: 'if(a){print(a);}'
+    IfStmtContext: 'if(a){print(a);}'
+      TerminalNodeImpl: 'if'
+      TerminalNodeImpl: '('
+      BoolExprContext: 'a'
+        BoolTermContext: 'a'
+          BoolFactorContext: 'a'
+            TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ')'
+      BlockContext: '{print(a);}'
+        TerminalNodeImpl: '{'
+        StatementContext: 'print(a);'
+          PrintStmtContext: 'print(a);'
+            TerminalNodeImpl: 'print'
+            TerminalNodeImpl: '('
+            TerminalNodeImpl: 'a'
+            TerminalNodeImpl: ')'
+            TerminalNodeImpl: ';'
+        TerminalNodeImpl: '}'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+Semantic error: Condición del 'if' debe ser booleana.
+
+⚠️  1 error(es) semántico(s) encontrado(s):
+  1. Condición del 'if' debe ser booleana.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='a', type='int', category='variable')>
+
+[ABORT] No se puede continuar con errores semánticos.
+

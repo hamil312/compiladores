@@ -1,0 +1,113 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'a'
+   3. COLON           -> ':'
+   4. INT_TYPE        -> 'int'
+   5. ASSIGN          -> '='
+   6. INT             -> '5'
+   7. SEMI            -> ';'
+   8. VAR             -> 'var'
+   9. ID              -> 'b'
+  10. COLON           -> ':'
+  11. BOOL_TYPE       -> 'bool'
+  12. ASSIGN          -> '='
+  13. TRUE            -> 'true'
+  14. SEMI            -> ';'
+  15. ID              -> 'result'
+  16. ASSIGN          -> '='
+  17. ID              -> 'a'
+  18. AND             -> 'and'
+  19. ID              -> 'b'
+  20. SEMI            -> ';'
+  21. PRINT           -> 'print'
+  22. LPAREN          -> '('
+  23. ID              -> 'result'
+  24. RPAREN          -> ')'
+  25. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - AND: 1
+  - ASSIGN: 3
+  - BOOL_TYPE: 1
+  - COLON: 2
+  - ID: 6
+  - INT: 1
+  - INT_TYPE: 1
+  - LPAREN: 1
+  - PRINT: 1
+  - RPAREN: 1
+  - SEMI: 4
+  - TRUE: 1
+  - VAR: 2
+[OK] 25 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'vara:int=5;varb:bool=true;result=aandb;print(re...'
+  StatementContext: 'vara:int=5;'
+    VarDeclContext: 'vara:int=5;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '5'
+        ArithTermContext: '5'
+          ArithFactorContext: '5'
+            TerminalNodeImpl: '5'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varb:bool=true;'
+    VarDeclContext: 'varb:bool=true;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'b'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'true'
+        BoolTermContext: 'true'
+          BoolFactorContext: 'true'
+            TerminalNodeImpl: 'true'
+      TerminalNodeImpl: ';'
+  StatementContext: 'result=aandb;'
+    AssignmentContext: 'result=aandb;'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'aandb'
+        BoolTermContext: 'aandb'
+          BoolTermContext: 'a'
+            BoolFactorContext: 'a'
+          TerminalNodeImpl: 'and'
+          BoolFactorContext: 'b'
+            TerminalNodeImpl: 'b'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+Semantic error: Operador AND requiere operandos booleanos.
+
+⚠️  1 error(es) semántico(s) encontrado(s):
+  1. Operador AND requiere operandos booleanos.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='a', type='int', category='variable')>
+   <Symbol(name='b', type='bool', category='variable')>
+   <Symbol(name='result', type='error_type', category='variable')>
+
+[ABORT] No se puede continuar con errores semánticos.
+

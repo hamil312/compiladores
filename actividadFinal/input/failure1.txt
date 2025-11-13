@@ -1,0 +1,6 @@
+fn getValue(): int {
+    return true;
+}
+
+result = getValue();
+print(result);

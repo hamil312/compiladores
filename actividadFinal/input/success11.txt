@@ -1,0 +1,9 @@
+fn xor(a: bool, b: bool): bool {
+    return (a and not b) or (not a and b);
+}
+
+var u: bool = true;
+var v: bool = false;
+
+result = xor(u, v) or (u and v);
+print(result);

@@ -1,0 +1,7 @@
+fn isPositive(n: int): bool {
+    return n > 0;
+}
+
+var flag: bool = true;
+result = isPositive(flag);
+print(result);

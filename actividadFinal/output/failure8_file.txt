@@ -1,0 +1,87 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'a'
+   3. COLON           -> ':'
+   4. INT_TYPE        -> 'int'
+   5. ASSIGN          -> '='
+   6. INT             -> '5'
+   7. SEMI            -> ';'
+   8. ID              -> 'result'
+   9. ASSIGN          -> '='
+  10. ID              -> 'undefined_func'
+  11. LPAREN          -> '('
+  12. ID              -> 'a'
+  13. RPAREN          -> ')'
+  14. SEMI            -> ';'
+  15. PRINT           -> 'print'
+  16. LPAREN          -> '('
+  17. ID              -> 'result'
+  18. RPAREN          -> ')'
+  19. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ASSIGN: 2
+  - COLON: 1
+  - ID: 5
+  - INT: 1
+  - INT_TYPE: 1
+  - LPAREN: 2
+  - PRINT: 1
+  - RPAREN: 2
+  - SEMI: 3
+  - VAR: 1
+[OK] 19 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'vara:int=5;result=undefined_func(a);print(resul...'
+  StatementContext: 'vara:int=5;'
+    VarDeclContext: 'vara:int=5;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '5'
+        ArithTermContext: '5'
+          ArithFactorContext: '5'
+            TerminalNodeImpl: '5'
+      TerminalNodeImpl: ';'
+  StatementContext: 'result=undefined_func(a);'
+    AssignmentContext: 'result=undefined_func(a);'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'undefined_func(a)'
+        BoolTermContext: 'undefined_func(a)'
+          BoolFactorContext: 'undefined_func(a)'
+            FunctionCallContext: 'undefined_func(a)'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+Semantic error: La función 'undefined_func' no está definida.
+
+⚠️  1 error(es) semántico(s) encontrado(s):
+  1. La función 'undefined_func' no está definida.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='a', type='int', category='variable')>
+   <Symbol(name='result', type='error_type', category='variable')>
+
+[ABORT] No se puede continuar con errores semánticos.
+

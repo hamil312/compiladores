@@ -1,0 +1,123 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'p'
+   3. COLON           -> ':'
+   4. BOOL_TYPE       -> 'bool'
+   5. ASSIGN          -> '='
+   6. TRUE            -> 'true'
+   7. SEMI            -> ';'
+   8. VAR             -> 'var'
+   9. ID              -> 'q'
+  10. COLON           -> ':'
+  11. BOOL_TYPE       -> 'bool'
+  12. ASSIGN          -> '='
+  13. FALSE           -> 'false'
+  14. SEMI            -> ';'
+  15. VAR             -> 'var'
+  16. ID              -> 'r'
+  17. COLON           -> ':'
+  18. INT_TYPE        -> 'int'
+  19. ASSIGN          -> '='
+  20. ID              -> 'p'
+  21. ADD             -> '+'
+  22. ID              -> 'q'
+  23. SEMI            -> ';'
+  24. PRINT           -> 'print'
+  25. LPAREN          -> '('
+  26. ID              -> 'r'
+  27. RPAREN          -> ')'
+  28. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ADD: 1
+  - ASSIGN: 3
+  - BOOL_TYPE: 2
+  - COLON: 3
+  - FALSE: 1
+  - ID: 6
+  - INT_TYPE: 1
+  - LPAREN: 1
+  - PRINT: 1
+  - RPAREN: 1
+  - SEMI: 4
+  - TRUE: 1
+  - VAR: 3
+[OK] 28 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'varp:bool=true;varq:bool=false;varr:int=p+q;pri...'
+  StatementContext: 'varp:bool=true;'
+    VarDeclContext: 'varp:bool=true;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'p'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'true'
+        BoolTermContext: 'true'
+          BoolFactorContext: 'true'
+            TerminalNodeImpl: 'true'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varq:bool=false;'
+    VarDeclContext: 'varq:bool=false;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'q'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'false'
+        BoolTermContext: 'false'
+          BoolFactorContext: 'false'
+            TerminalNodeImpl: 'false'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varr:int=p+q;'
+    VarDeclContext: 'varr:int=p+q;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'r'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: 'p+q'
+        ArithExprContext: 'p'
+          ArithTermContext: 'p'
+            ArithFactorContext: 'p'
+        TerminalNodeImpl: '+'
+        ArithTermContext: 'q'
+          ArithFactorContext: 'q'
+            TerminalNodeImpl: 'q'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(r);'
+    PrintStmtContext: 'print(r);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'r'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+Semantic error: La variable 'p' no es de tipo int.
+Semantic error: La variable 'q' no es de tipo int.
+
+⚠️  2 error(es) semántico(s) encontrado(s):
+  1. La variable 'p' no es de tipo int.
+  2. La variable 'q' no es de tipo int.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='p', type='bool', category='variable')>
+   <Symbol(name='q', type='bool', category='variable')>
+   <Symbol(name='r', type='int', category='variable')>
+
+[ABORT] No se puede continuar con errores semánticos.
+

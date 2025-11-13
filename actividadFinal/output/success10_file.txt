@@ -1,0 +1,331 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. FUNCTION        -> 'fn'
+   2. ID              -> 'sum'
+   3. LPAREN          -> '('
+   4. ID              -> 'x'
+   5. COLON           -> ':'
+   6. INT_TYPE        -> 'int'
+   7. COMMA           -> ','
+   8. ID              -> 'y'
+   9. COLON           -> ':'
+  10. INT_TYPE        -> 'int'
+  11. RPAREN          -> ')'
+  12. COLON           -> ':'
+  13. INT_TYPE        -> 'int'
+  14. LBRACE          -> '{'
+  15. RETURN          -> 'return'
+  16. ID              -> 'x'
+  17. ADD             -> '+'
+  18. ID              -> 'y'
+  19. SEMI            -> ';'
+  20. RBRACE          -> '}'
+  21. VAR             -> 'var'
+  22. ID              -> 'a'
+  23. COLON           -> ':'
+  24. INT_TYPE        -> 'int'
+  25. ASSIGN          -> '='
+  26. INT             -> '2'
+  27. SEMI            -> ';'
+  28. VAR             -> 'var'
+  29. ID              -> 'b'
+  30. COLON           -> ':'
+  31. INT_TYPE        -> 'int'
+  32. ASSIGN          -> '='
+  33. INT             -> '7'
+  34. SEMI            -> ';'
+  35. VAR             -> 'var'
+  36. ID              -> 'c'
+  37. COLON           -> ':'
+  38. INT_TYPE        -> 'int'
+  39. ASSIGN          -> '='
+  40. INT             -> '5'
+  41. SEMI            -> ';'
+  42. VAR             -> 'var'
+  43. ID              -> 'd'
+  44. COLON           -> ':'
+  45. INT_TYPE        -> 'int'
+  46. ASSIGN          -> '='
+  47. INT             -> '12'
+  48. SEMI            -> ';'
+  49. ID              -> 'result'
+  50. ASSIGN          -> '='
+  51. LPAREN          -> '('
+  52. ID              -> 'sum'
+  53. LPAREN          -> '('
+  54. ID              -> 'a'
+  55. COMMA           -> ','
+  56. ID              -> 'b'
+  57. RPAREN          -> ')'
+  58. GT              -> '>'
+  59. ID              -> 'c'
+  60. RPAREN          -> ')'
+  61. OR              -> 'or'
+  62. NOT             -> 'not'
+  63. LPAREN          -> '('
+  64. ID              -> 'sum'
+  65. LPAREN          -> '('
+  66. ID              -> 'b'
+  67. COMMA           -> ','
+  68. ID              -> 'c'
+  69. RPAREN          -> ')'
+  70. LTE             -> '<='
+  71. ID              -> 'd'
+  72. RPAREN          -> ')'
+  73. SEMI            -> ';'
+  74. PRINT           -> 'print'
+  75. LPAREN          -> '('
+  76. ID              -> 'result'
+  77. RPAREN          -> ')'
+  78. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ADD: 1
+  - ASSIGN: 5
+  - COLON: 7
+  - COMMA: 3
+  - FUNCTION: 1
+  - GT: 1
+  - ID: 19
+  - INT: 4
+  - INT_TYPE: 7
+  - LBRACE: 1
+  - LPAREN: 6
+  - LTE: 1
+  - NOT: 1
+  - OR: 1
+  - PRINT: 1
+  - RBRACE: 1
+  - RETURN: 1
+  - RPAREN: 6
+  - SEMI: 7
+  - VAR: 4
+[OK] 78 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'fnsum(x:int,y:int):int{returnx+y;}vara:int=2;va...'
+  FunctionDefContext: 'fnsum(x:int,y:int):int{returnx+y;}'
+    TerminalNodeImpl: 'fn'
+    TerminalNodeImpl: 'sum'
+    TerminalNodeImpl: '('
+    ParamListContext: 'x:int,y:int'
+      ParamContext: 'x:int'
+        TerminalNodeImpl: 'x'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+      TerminalNodeImpl: ','
+      ParamContext: 'y:int'
+        TerminalNodeImpl: 'y'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+    TerminalNodeImpl: ')'
+    TerminalNodeImpl: ':'
+    ReturnTypeContext: 'int'
+      TerminalNodeImpl: 'int'
+    TerminalNodeImpl: '{'
+    ReturnStmtContext: 'returnx+y;'
+      TerminalNodeImpl: 'return'
+      ArithExprContext: 'x+y'
+        ArithExprContext: 'x'
+          ArithTermContext: 'x'
+            ArithFactorContext: 'x'
+        TerminalNodeImpl: '+'
+        ArithTermContext: 'y'
+          ArithFactorContext: 'y'
+            TerminalNodeImpl: 'y'
+      TerminalNodeImpl: ';'
+    TerminalNodeImpl: '}'
+  StatementContext: 'vara:int=2;'
+    VarDeclContext: 'vara:int=2;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '2'
+        ArithTermContext: '2'
+          ArithFactorContext: '2'
+            TerminalNodeImpl: '2'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varb:int=7;'
+    VarDeclContext: 'varb:int=7;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'b'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '7'
+        ArithTermContext: '7'
+          ArithFactorContext: '7'
+            TerminalNodeImpl: '7'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varc:int=5;'
+    VarDeclContext: 'varc:int=5;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'c'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '5'
+        ArithTermContext: '5'
+          ArithFactorContext: '5'
+            TerminalNodeImpl: '5'
+      TerminalNodeImpl: ';'
+  StatementContext: 'vard:int=12;'
+    VarDeclContext: 'vard:int=12;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'd'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '12'
+        ArithTermContext: '12'
+          ArithFactorContext: '12'
+            TerminalNodeImpl: '12'
+      TerminalNodeImpl: ';'
+  StatementContext: 'result=(sum(a,b)>c)ornot(sum(b,c)<=d);'
+    AssignmentContext: 'result=(sum(a,b)>c)ornot(sum(b,c)<=d);'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: '(sum(a,b)>c)ornot(sum(b,c)<=d)'
+        BoolExprContext: '(sum(a,b)>c)'
+          BoolTermContext: '(sum(a,b)>c)'
+            BoolFactorContext: '(sum(a,b)>c)'
+        TerminalNodeImpl: 'or'
+        BoolTermContext: 'not(sum(b,c)<=d)'
+          BoolFactorContext: 'not(sum(b,c)<=d)'
+            TerminalNodeImpl: 'not'
+            BoolFactorContext: '(sum(b,c)<=d)'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+[OK] No se encontraron errores semánticos.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='sum', return_type='int', params=[x:int, y:int], category='function')>
+   <Symbol(name='a', type='int', category='variable')>
+   <Symbol(name='b', type='int', category='variable')>
+   <Symbol(name='c', type='int', category='variable')>
+   <Symbol(name='d', type='int', category='variable')>
+   <Symbol(name='result', type='bool', category='variable')>
+
+FASE 4: GENERACION DE CODIGO INTERMEDIO (TAC)
+--------------------------------------------------
+## CÓDIGO INTERMEDIO (TAC)
+func_sum:
+  t0 = x + y
+  ret t0
+  goto end_func_sum
+end_func_sum:
+  a = 2
+  b = 7
+  c = 5
+  d = 12
+  t1 = call sum(a, b)
+  t2 = t1 > c
+  t3 = call sum(b, c)
+  t4 = t3 <= d
+  t5 = t4 == 0
+  t6 = t2 or t5
+  result = t6
+  print result
+
+[OK] 17 instrucciones TAC generadas.
+
+FASE 5: GENERACION DE CODIGO PYTHON
+--------------------------------------------------
+Código Python generado y guardado en 'output/success10.py':
+
+==================================================
+# Código generado automáticamente
+
+def sum(x, y):
+    # Variables temporales
+    t0 = 0
+    
+    t0 = x + y
+    return t0
+
+def main():
+    # Variables de usuario
+    a = 0
+    b = 0
+    c = 0
+    d = 0
+    result = 0
+    
+    a = 2
+    b = 7
+    c = 5
+    d = 12
+    t1 = sum(a, b)
+    t2 = t1 > c
+    t3 = sum(b, c)
+    t4 = t3 <= d
+    t5 = t4 == 0
+    t6 = t2 or t5
+    result = t6
+    print(result)
+    
+    # Estado final de variables:
+    try:
+        print(f'a = {a}')
+    except NameError:
+        pass
+    try:
+        print(f'b = {b}')
+    except NameError:
+        pass
+    try:
+        print(f'c = {c}')
+    except NameError:
+        pass
+    try:
+        print(f'd = {d}')
+    except NameError:
+        pass
+    try:
+        print(f'result = {result}')
+    except NameError:
+        pass
+    return 0
+
+if __name__ == '__main__':
+    main()
+==================================================
+
+[OK] Generación de código completada.
+
+RESUMEN DE COMPILACION
+--------------------------------------------------
+✓ Archivo de entrada:    input/success10.txt
+✓ Análisis léxico:       78 tokens generados
+✓ Análisis sintáctico:   Parse tree completado
+✓ Análisis semántico:    0 errores encontrados
+✓ Código intermedio:     17 instrucciones TAC
+✓ Código Python:         Archivo 'output/success10.py' generado
+✓ Log de compilación:    Archivo 'output/success10_file.txt' generado
+--------------------------------------------------
+[SUCCESS] Compilación completada exitosamente.
+

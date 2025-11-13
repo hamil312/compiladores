@@ -1,0 +1,134 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. FUNCTION        -> 'fn'
+   2. ID              -> 'isPositive'
+   3. LPAREN          -> '('
+   4. ID              -> 'n'
+   5. COLON           -> ':'
+   6. INT_TYPE        -> 'int'
+   7. RPAREN          -> ')'
+   8. COLON           -> ':'
+   9. BOOL_TYPE       -> 'bool'
+  10. LBRACE          -> '{'
+  11. RETURN          -> 'return'
+  12. ID              -> 'n'
+  13. GT              -> '>'
+  14. INT             -> '0'
+  15. SEMI            -> ';'
+  16. RBRACE          -> '}'
+  17. VAR             -> 'var'
+  18. ID              -> 'flag'
+  19. COLON           -> ':'
+  20. BOOL_TYPE       -> 'bool'
+  21. ASSIGN          -> '='
+  22. TRUE            -> 'true'
+  23. SEMI            -> ';'
+  24. ID              -> 'result'
+  25. ASSIGN          -> '='
+  26. ID              -> 'isPositive'
+  27. LPAREN          -> '('
+  28. ID              -> 'flag'
+  29. RPAREN          -> ')'
+  30. SEMI            -> ';'
+  31. PRINT           -> 'print'
+  32. LPAREN          -> '('
+  33. ID              -> 'result'
+  34. RPAREN          -> ')'
+  35. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ASSIGN: 2
+  - BOOL_TYPE: 2
+  - COLON: 3
+  - FUNCTION: 1
+  - GT: 1
+  - ID: 8
+  - INT: 1
+  - INT_TYPE: 1
+  - LBRACE: 1
+  - LPAREN: 3
+  - PRINT: 1
+  - RBRACE: 1
+  - RETURN: 1
+  - RPAREN: 3
+  - SEMI: 4
+  - TRUE: 1
+  - VAR: 1
+[OK] 35 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'fnisPositive(n:int):bool{returnn>0;}varflag:boo...'
+  FunctionDefContext: 'fnisPositive(n:int):bool{returnn>0;}'
+    TerminalNodeImpl: 'fn'
+    TerminalNodeImpl: 'isPositive'
+    TerminalNodeImpl: '('
+    ParamListContext: 'n:int'
+      ParamContext: 'n:int'
+        TerminalNodeImpl: 'n'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+    TerminalNodeImpl: ')'
+    TerminalNodeImpl: ':'
+    ReturnTypeContext: 'bool'
+      TerminalNodeImpl: 'bool'
+    TerminalNodeImpl: '{'
+    ReturnStmtContext: 'returnn>0;'
+      TerminalNodeImpl: 'return'
+      BoolExprContext: 'n>0'
+        BoolTermContext: 'n>0'
+          BoolFactorContext: 'n>0'
+            ComparisonContext: 'n>0'
+      TerminalNodeImpl: ';'
+    TerminalNodeImpl: '}'
+  StatementContext: 'varflag:bool=true;'
+    VarDeclContext: 'varflag:bool=true;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'flag'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'true'
+        BoolTermContext: 'true'
+          BoolFactorContext: 'true'
+            TerminalNodeImpl: 'true'
+      TerminalNodeImpl: ';'
+  StatementContext: 'result=isPositive(flag);'
+    AssignmentContext: 'result=isPositive(flag);'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'isPositive(flag)'
+        BoolTermContext: 'isPositive(flag)'
+          BoolFactorContext: 'isPositive(flag)'
+            FunctionCallContext: 'isPositive(flag)'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+Semantic error: En función 'isPositive', argumento 1 ('n'): esperado int, obtenido bool.
+
+⚠️  1 error(es) semántico(s) encontrado(s):
+  1. En función 'isPositive', argumento 1 ('n'): esperado int, obtenido bool.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='isPositive', return_type='bool', params=[n:int], category='function')>
+   <Symbol(name='flag', type='bool', category='variable')>
+   <Symbol(name='result', type='bool', category='variable')>
+
+[ABORT] No se puede continuar con errores semánticos.
+

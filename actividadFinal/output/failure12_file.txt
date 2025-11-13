@@ -1,0 +1,55 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'a'
+   3. COLON           -> ':'
+   4. BOOL_TYPE       -> 'bool'
+   5. ASSIGN          -> '='
+   6. TRUE            -> 'true'
+   7. SEMI            -> ';'
+   8. VAR             -> 'var'
+   9. ID              -> 'b'
+  10. COLON           -> ':'
+  11. BOOL_TYPE       -> 'bool'
+  12. ASSIGN          -> '='
+  13. FALSE           -> 'false'
+  14. SEMI            -> ';'
+  15. ID              -> 'result'
+  16. ASSIGN          -> '='
+  17. LPAREN          -> '('
+  18. ID              -> 'a'
+  19. AND             -> 'and'
+  20. LPAREN          -> '('
+  21. NOT             -> 'not'
+  22. ID              -> 'b'
+  23. RPAREN          -> ')'
+  24. SEMI            -> ';'
+  25. PRINT           -> 'print'
+  26. LPAREN          -> '('
+  27. ID              -> 'result'
+  28. RPAREN          -> ')'
+  29. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - AND: 1
+  - ASSIGN: 3
+  - BOOL_TYPE: 2
+  - COLON: 2
+  - FALSE: 1
+  - ID: 6
+  - LPAREN: 3
+  - NOT: 1
+  - PRINT: 1
+  - RPAREN: 2
+  - SEMI: 4
+  - TRUE: 1
+  - VAR: 2
+[OK] 29 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+
+❌ Error de sintaxis en la línea 4:23 - missing ')' at ';'
+[ABORT] Compilación abortada.
+
