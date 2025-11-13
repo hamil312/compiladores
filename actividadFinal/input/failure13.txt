@@ -1,0 +1,7 @@
+x = true;
+var y: bool = false;
+
+whlie[x] {
+    x = false;
+}
+print(x);

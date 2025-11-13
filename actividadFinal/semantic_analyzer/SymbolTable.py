@@ -109,7 +109,8 @@ class SymbolTable:
         """
         sym = self.lookup(name)
         if sym is None:
-            # Creación implícita en el ámbito actual (p. ej. primera asignación)
+            # Variable no declarada: registrar error y crearla para continuar
+            self.record_error(f"Uso de variable '{name}' no declarada en el ámbito '{self.current_scope.name}'.")
             sym = Symbol(name=name, type=var_type, category='variable')
             self.current_scope.insert(sym)
             return sym

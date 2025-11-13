@@ -34,7 +34,7 @@ def main():
     os.makedirs("output", exist_ok=True)
     
     # Buscar primer archivo .txt en la carpeta input/
-    input_file = "input/failure12.txt"
+    input_file = "input/failure13.txt"
     input_filename = os.path.splitext(os.path.basename(input_file))[0]
     
     # Generar nombres de salida

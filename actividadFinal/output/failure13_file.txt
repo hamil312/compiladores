@@ -1,0 +1,6 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+
+❌ Error de sintaxis en la línea 4:5 - token recognition error at: '['
+[ABORT] Compilación abortada.
+
