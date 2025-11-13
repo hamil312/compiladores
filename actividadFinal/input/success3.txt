@@ -1,0 +1,5 @@
+var x: int = 10;
+var y: int = 4;
+var z: int = 2;
+result = (x / (y - z) >= 3) or (not (y * z == 8) and x < 20);
+print(result);

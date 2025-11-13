@@ -1,0 +1,278 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. FUNCTION        -> 'fn'
+   2. ID              -> 'add'
+   3. LPAREN          -> '('
+   4. ID              -> 'x'
+   5. COLON           -> ':'
+   6. INT_TYPE        -> 'int'
+   7. COMMA           -> ','
+   8. ID              -> 'y'
+   9. COLON           -> ':'
+  10. INT_TYPE        -> 'int'
+  11. RPAREN          -> ')'
+  12. COLON           -> ':'
+  13. INT_TYPE        -> 'int'
+  14. LBRACE          -> '{'
+  15. RETURN          -> 'return'
+  16. ID              -> 'x'
+  17. ADD             -> '+'
+  18. ID              -> 'y'
+  19. SEMI            -> ';'
+  20. RBRACE          -> '}'
+  21. FUNCTION        -> 'fn'
+  22. ID              -> 'isPositive'
+  23. LPAREN          -> '('
+  24. ID              -> 'n'
+  25. COLON           -> ':'
+  26. INT_TYPE        -> 'int'
+  27. RPAREN          -> ')'
+  28. COLON           -> ':'
+  29. BOOL_TYPE       -> 'bool'
+  30. LBRACE          -> '{'
+  31. RETURN          -> 'return'
+  32. ID              -> 'n'
+  33. GT              -> '>'
+  34. INT             -> '0'
+  35. SEMI            -> ';'
+  36. RBRACE          -> '}'
+  37. ID              -> 'a'
+  38. ASSIGN          -> '='
+  39. ID              -> 'add'
+  40. LPAREN          -> '('
+  41. INT             -> '5'
+  42. COMMA           -> ','
+  43. INT             -> '3'
+  44. RPAREN          -> ')'
+  45. SEMI            -> ';'
+  46. PRINT           -> 'print'
+  47. LPAREN          -> '('
+  48. ID              -> 'a'
+  49. RPAREN          -> ')'
+  50. SEMI            -> ';'
+  51. IF              -> 'if'
+  52. LPAREN          -> '('
+  53. ID              -> 'isPositive'
+  54. LPAREN          -> '('
+  55. ID              -> 'a'
+  56. RPAREN          -> ')'
+  57. RPAREN          -> ')'
+  58. LBRACE          -> '{'
+  59. PRINT           -> 'print'
+  60. LPAREN          -> '('
+  61. INT             -> '1'
+  62. RPAREN          -> ')'
+  63. SEMI            -> ';'
+  64. RBRACE          -> '}'
+
+Resumen de tipos de token:
+  - ADD: 1
+  - ASSIGN: 1
+  - BOOL_TYPE: 1
+  - COLON: 5
+  - COMMA: 2
+  - FUNCTION: 2
+  - GT: 1
+  - ID: 13
+  - IF: 1
+  - INT: 4
+  - INT_TYPE: 4
+  - LBRACE: 3
+  - LPAREN: 7
+  - PRINT: 2
+  - RBRACE: 3
+  - RETURN: 2
+  - RPAREN: 7
+  - SEMI: 5
+[OK] 64 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'fnadd(x:int,y:int):int{returnx+y;}fnisPositive(...'
+  FunctionDefContext: 'fnadd(x:int,y:int):int{returnx+y;}'
+    TerminalNodeImpl: 'fn'
+    TerminalNodeImpl: 'add'
+    TerminalNodeImpl: '('
+    ParamListContext: 'x:int,y:int'
+      ParamContext: 'x:int'
+        TerminalNodeImpl: 'x'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+      TerminalNodeImpl: ','
+      ParamContext: 'y:int'
+        TerminalNodeImpl: 'y'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+    TerminalNodeImpl: ')'
+    TerminalNodeImpl: ':'
+    ReturnTypeContext: 'int'
+      TerminalNodeImpl: 'int'
+    TerminalNodeImpl: '{'
+    ReturnStmtContext: 'returnx+y;'
+      TerminalNodeImpl: 'return'
+      ArithExprContext: 'x+y'
+        ArithExprContext: 'x'
+          ArithTermContext: 'x'
+            ArithFactorContext: 'x'
+        TerminalNodeImpl: '+'
+        ArithTermContext: 'y'
+          ArithFactorContext: 'y'
+            TerminalNodeImpl: 'y'
+      TerminalNodeImpl: ';'
+    TerminalNodeImpl: '}'
+  FunctionDefContext: 'fnisPositive(n:int):bool{returnn>0;}'
+    TerminalNodeImpl: 'fn'
+    TerminalNodeImpl: 'isPositive'
+    TerminalNodeImpl: '('
+    ParamListContext: 'n:int'
+      ParamContext: 'n:int'
+        TerminalNodeImpl: 'n'
+        TerminalNodeImpl: ':'
+        ParamTypeContext: 'int'
+          TerminalNodeImpl: 'int'
+    TerminalNodeImpl: ')'
+    TerminalNodeImpl: ':'
+    ReturnTypeContext: 'bool'
+      TerminalNodeImpl: 'bool'
+    TerminalNodeImpl: '{'
+    ReturnStmtContext: 'returnn>0;'
+      TerminalNodeImpl: 'return'
+      BoolExprContext: 'n>0'
+        BoolTermContext: 'n>0'
+          BoolFactorContext: 'n>0'
+            ComparisonContext: 'n>0'
+      TerminalNodeImpl: ';'
+    TerminalNodeImpl: '}'
+  StatementContext: 'a=add(5,3);'
+    AssignmentContext: 'a=add(5,3);'
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: '='
+      BoolExprContext: 'add(5,3)'
+        BoolTermContext: 'add(5,3)'
+          BoolFactorContext: 'add(5,3)'
+            FunctionCallContext: 'add(5,3)'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(a);'
+    PrintStmtContext: 'print(a);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  StatementContext: 'if(isPositive(a)){print(1);}'
+    IfStmtContext: 'if(isPositive(a)){print(1);}'
+      TerminalNodeImpl: 'if'
+      TerminalNodeImpl: '('
+      BoolExprContext: 'isPositive(a)'
+        BoolTermContext: 'isPositive(a)'
+          BoolFactorContext: 'isPositive(a)'
+            FunctionCallContext: 'isPositive(a)'
+      TerminalNodeImpl: ')'
+      BlockContext: '{print(1);}'
+        TerminalNodeImpl: '{'
+        StatementContext: 'print(1);'
+          PrintStmtContext: 'print(1);'
+            TerminalNodeImpl: 'print'
+            TerminalNodeImpl: '('
+            TerminalNodeImpl: '1'
+            TerminalNodeImpl: ')'
+            TerminalNodeImpl: ';'
+        TerminalNodeImpl: '}'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+[OK] No se encontraron errores semánticos.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='add', return_type='int', params=[x:int, y:int], category='function')>
+   <Symbol(name='isPositive', return_type='bool', params=[n:int], category='function')>
+   <Symbol(name='a', type='int', category='variable')>
+
+FASE 4: GENERACION DE CODIGO INTERMEDIO (TAC)
+--------------------------------------------------
+## CÓDIGO INTERMEDIO (TAC)
+func_add:
+  t0 = x + y
+  ret t0
+  goto end_func_add
+end_func_add:
+func_isPositive:
+  t1 = n > 0
+  ret t1
+  goto end_func_isPositive
+end_func_isPositive:
+  t2 = call add(5, 3)
+  a = t2
+  print a
+  t3 = call isPositive(a)
+  if_false t3 goto L1
+  print 1
+L1:
+
+[OK] 17 instrucciones TAC generadas.
+
+FASE 5: GENERACION DE CODIGO PYTHON
+--------------------------------------------------
+Código Python generado y guardado en 'output/inputS1.py':
+
+==================================================
+# Código generado automáticamente
+
+def add(x, y):
+    # Variables temporales
+    t0 = 0
+    
+    t0 = x + y
+    return t0
+
+def isPositive(n):
+    # Variables temporales
+    t1 = 0
+    
+    t1 = n > 0
+    return t1
+
+def main():
+    # Variables de usuario
+    a = 0
+    
+    t2 = add(5, 3)
+    a = t2
+    print(a)
+    t3 = isPositive(a)
+    if t3:
+        print(1)
+    
+    # Estado final de variables:
+    try:
+        print(f'a = {a}')
+    except NameError:
+        pass
+    return 0
+
+if __name__ == '__main__':
+    main()
+==================================================
+
+[OK] Generación de código completada.
+
+RESUMEN DE COMPILACION
+--------------------------------------------------
+✓ Archivo de entrada:    input/inputS1.txt
+✓ Análisis léxico:       64 tokens generados
+✓ Análisis sintáctico:   Parse tree completado
+✓ Análisis semántico:    0 errores encontrados
+✓ Código intermedio:     17 instrucciones TAC
+✓ Código Python:         Archivo 'output/inputS1.py' generado
+✓ Log de compilación:    Archivo 'output/inputS1_file.txt' generado
+--------------------------------------------------
+[SUCCESS] Compilación completada exitosamente.
+

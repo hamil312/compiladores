@@ -1,0 +1,6 @@
+var a: int = 5;
+var b: int = 8;
+var c: int = 3;
+
+result = (a > 5 and b < 10) or not (c == 3);
+print(result);

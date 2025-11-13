@@ -1,0 +1,247 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'x'
+   3. COLON           -> ':'
+   4. INT_TYPE        -> 'int'
+   5. ASSIGN          -> '='
+   6. INT             -> '10'
+   7. SEMI            -> ';'
+   8. VAR             -> 'var'
+   9. ID              -> 'y'
+  10. COLON           -> ':'
+  11. INT_TYPE        -> 'int'
+  12. ASSIGN          -> '='
+  13. INT             -> '4'
+  14. SEMI            -> ';'
+  15. VAR             -> 'var'
+  16. ID              -> 'z'
+  17. COLON           -> ':'
+  18. INT_TYPE        -> 'int'
+  19. ASSIGN          -> '='
+  20. INT             -> '2'
+  21. SEMI            -> ';'
+  22. ID              -> 'result'
+  23. ASSIGN          -> '='
+  24. LPAREN          -> '('
+  25. ID              -> 'x'
+  26. DIV             -> '/'
+  27. LPAREN          -> '('
+  28. ID              -> 'y'
+  29. SUB             -> '-'
+  30. ID              -> 'z'
+  31. RPAREN          -> ')'
+  32. GTE             -> '>='
+  33. INT             -> '3'
+  34. RPAREN          -> ')'
+  35. OR              -> 'or'
+  36. LPAREN          -> '('
+  37. NOT             -> 'not'
+  38. LPAREN          -> '('
+  39. ID              -> 'y'
+  40. MUL             -> '*'
+  41. ID              -> 'z'
+  42. EQ              -> '=='
+  43. INT             -> '8'
+  44. RPAREN          -> ')'
+  45. AND             -> 'and'
+  46. ID              -> 'x'
+  47. LT              -> '<'
+  48. INT             -> '20'
+  49. RPAREN          -> ')'
+  50. SEMI            -> ';'
+  51. PRINT           -> 'print'
+  52. LPAREN          -> '('
+  53. ID              -> 'result'
+  54. RPAREN          -> ')'
+  55. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - AND: 1
+  - ASSIGN: 4
+  - COLON: 3
+  - DIV: 1
+  - EQ: 1
+  - GTE: 1
+  - ID: 11
+  - INT: 6
+  - INT_TYPE: 3
+  - LPAREN: 5
+  - LT: 1
+  - MUL: 1
+  - NOT: 1
+  - OR: 1
+  - PRINT: 1
+  - RPAREN: 5
+  - SEMI: 5
+  - SUB: 1
+  - VAR: 3
+[OK] 55 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'varx:int=10;vary:int=4;varz:int=2;result=(x/(y-...'
+  StatementContext: 'varx:int=10;'
+    VarDeclContext: 'varx:int=10;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'x'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '10'
+        ArithTermContext: '10'
+          ArithFactorContext: '10'
+            TerminalNodeImpl: '10'
+      TerminalNodeImpl: ';'
+  StatementContext: 'vary:int=4;'
+    VarDeclContext: 'vary:int=4;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'y'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '4'
+        ArithTermContext: '4'
+          ArithFactorContext: '4'
+            TerminalNodeImpl: '4'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varz:int=2;'
+    VarDeclContext: 'varz:int=2;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'z'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '2'
+        ArithTermContext: '2'
+          ArithFactorContext: '2'
+            TerminalNodeImpl: '2'
+      TerminalNodeImpl: ';'
+  StatementContext: 'result=(x/(y-z)>=3)or(not(y*z==8)andx<20);'
+    AssignmentContext: 'result=(x/(y-z)>=3)or(not(y*z==8)andx<20);'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: '(x/(y-z)>=3)or(not(y*z==8)andx<20)'
+        BoolExprContext: '(x/(y-z)>=3)'
+          BoolTermContext: '(x/(y-z)>=3)'
+            BoolFactorContext: '(x/(y-z)>=3)'
+        TerminalNodeImpl: 'or'
+        BoolTermContext: '(not(y*z==8)andx<20)'
+          BoolFactorContext: '(not(y*z==8)andx<20)'
+            TerminalNodeImpl: '('
+            BoolExprContext: 'not(y*z==8)andx<20'
+            TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+[OK] No se encontraron errores semánticos.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='x', type='int', category='variable')>
+   <Symbol(name='y', type='int', category='variable')>
+   <Symbol(name='z', type='int', category='variable')>
+   <Symbol(name='result', type='bool', category='variable')>
+
+FASE 4: GENERACION DE CODIGO INTERMEDIO (TAC)
+--------------------------------------------------
+## CÓDIGO INTERMEDIO (TAC)
+  x = 10
+  y = 4
+  z = 2
+  t0 = y - z
+  t1 = x / t0
+  t2 = t1 >= 3
+  t3 = y * z
+  t4 = t3 == 8
+  t5 = t4 == 0
+  t6 = x < 20
+  t7 = t5 and t6
+  t8 = t2 or t7
+  result = t8
+  print result
+
+[OK] 14 instrucciones TAC generadas.
+
+FASE 5: GENERACION DE CODIGO PYTHON
+--------------------------------------------------
+Código Python generado y guardado en 'output/success3.py':
+
+==================================================
+# Código generado automáticamente
+
+def main():
+    # Variables de usuario
+    result = 0
+    x = 0
+    y = 0
+    z = 0
+    
+    x = 10
+    y = 4
+    z = 2
+    t0 = y - z
+    t1 = x / t0
+    t2 = t1 >= 3
+    t3 = y * z
+    t4 = t3 == 8
+    t5 = t4 == 0
+    t6 = x < 20
+    t7 = t5 and t6
+    t8 = t2 or t7
+    result = t8
+    print(result)
+    
+    # Estado final de variables:
+    try:
+        print(f'result = {result}')
+    except NameError:
+        pass
+    try:
+        print(f'x = {x}')
+    except NameError:
+        pass
+    try:
+        print(f'y = {y}')
+    except NameError:
+        pass
+    try:
+        print(f'z = {z}')
+    except NameError:
+        pass
+    return 0
+
+if __name__ == '__main__':
+    main()
+==================================================
+
+[OK] Generación de código completada.
+
+RESUMEN DE COMPILACION
+--------------------------------------------------
+✓ Archivo de entrada:    input/success3.txt
+✓ Análisis léxico:       55 tokens generados
+✓ Análisis sintáctico:   Parse tree completado
+✓ Análisis semántico:    0 errores encontrados
+✓ Código intermedio:     14 instrucciones TAC
+✓ Código Python:         Archivo 'output/success3.py' generado
+✓ Log de compilación:    Archivo 'output/success3_file.txt' generado
+--------------------------------------------------
+[SUCCESS] Compilación completada exitosamente.
+

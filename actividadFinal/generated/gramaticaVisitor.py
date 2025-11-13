@@ -14,8 +14,48 @@ class gramaticaVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by gramaticaParser#functionDef.
+    def visitFunctionDef(self, ctx:gramaticaParser.FunctionDefContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gramaticaParser#paramList.
+    def visitParamList(self, ctx:gramaticaParser.ParamListContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gramaticaParser#param.
+    def visitParam(self, ctx:gramaticaParser.ParamContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gramaticaParser#paramType.
+    def visitParamType(self, ctx:gramaticaParser.ParamTypeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gramaticaParser#returnType.
+    def visitReturnType(self, ctx:gramaticaParser.ReturnTypeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gramaticaParser#returnStmt.
+    def visitReturnStmt(self, ctx:gramaticaParser.ReturnStmtContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by gramaticaParser#statement.
     def visitStatement(self, ctx:gramaticaParser.StatementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gramaticaParser#varDecl.
+    def visitVarDecl(self, ctx:gramaticaParser.VarDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gramaticaParser#varType.
+    def visitVarType(self, ctx:gramaticaParser.VarTypeContext):
         return self.visitChildren(ctx)
 
 
@@ -81,6 +121,16 @@ class gramaticaVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by gramaticaParser#arithFactor.
     def visitArithFactor(self, ctx:gramaticaParser.ArithFactorContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gramaticaParser#functionCall.
+    def visitFunctionCall(self, ctx:gramaticaParser.FunctionCallContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gramaticaParser#argList.
+    def visitArgList(self, ctx:gramaticaParser.ArgListContext):
         return self.visitChildren(ctx)
 
 

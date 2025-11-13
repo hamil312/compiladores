@@ -3,6 +3,7 @@ class IR_Generator:
         self.instructions = []  # Lista para guardar las instrucciones TAC
         self.temp_count = 0     # Contador para variables temporales (t0, t1, t2...)
         self.label_count = 0    # Contador para etiquetas (L0, L1, L2...)
+        self.current_function_end_label = None  # usado cuando generamos returns dentro de una función
 
     def new_temp(self):
         """Crea una nueva variable temporal y la devuelve."""
@@ -31,55 +32,112 @@ class IR_Generator:
     # ------------------------------------------------------------------
 
     def gen_program(self, ctx):
-        # ctx: program context (program : statement+ EOF)
+        # Primero generar funciones (si las hay), luego statements globales
+        if hasattr(ctx, "functionDef"):
+            for f in ctx.functionDef():
+                self.gen_function_def(f)
+        # statements globales
         for child in ctx.statement():
             self.gen_statement(child)
 
     def gen_statement(self, ctx):
-        # ctx puede ser assignment, printStmt, ifStmt, whileStmt, block
+        # ctx puede ser assignment, printStmt, ifStmt, whileStmt, block, varDecl
+        if ctx.assignment():
+            self.gen_assignment(ctx.assignment())
+            return
+        if ctx.printStmt():
+            self.gen_print(ctx.printStmt())
+            return
+        if ctx.ifStmt():
+            self.gen_if(ctx.ifStmt())
+            return
+        if ctx.whileStmt():
+            self.gen_while(ctx.whileStmt())
+            return
+        if ctx.block():
+            self.gen_block(ctx.block())
+            return
+        if ctx.varDecl():
+            self.gen_var_decl(ctx.varDecl())
+            return
+        # fallback: intentar procesar primer hijo como statement
         node = ctx.getChild(0)
-        tname = node.__class__.__name__
+        # intentar dispatch por texto (compatibilidad con versiones anteriores)
         text = node.getText()
-        # Distinguimos por nombre de regla (más robusto desde Visitor).
-        rule = node.getPayload().__class__.__name__ if hasattr(node, "getPayload") else None
-        # Simpler: mirar el número de hijos/tokens para decidir según la forma
-        first = node.getText()
-        # Intentar dispatch por tipo de regla textual:
-        if node.getText().startswith("print"):
+        if text.startswith("print"):
             self.gen_print(node)
-        elif node.getText().startswith("if"):
+        elif text.startswith("if"):
             self.gen_if(node)
-        elif node.getText().startswith("while"):
+        elif text.startswith("while"):
             self.gen_while(node)
-        elif node.getText().startswith("{"):
+        elif text.startswith("{"):
             self.gen_block(node)
         else:
-            # Asumimos assignment por defecto
             self.gen_assignment(node)
 
+    def gen_var_decl(self, ctx):
+        # varDecl : VAR ID (COLON varType)? (ASSIGN (boolExpr | arithExpr))? SEMI
+        var_name = ctx.ID().getText()
+        # buscar token '=' entre children
+        for i in range(ctx.getChildCount()):
+            child = ctx.getChild(i)
+            if child.getText() == '=':
+                rhs_ctx = ctx.getChild(i + 1)
+                rhs = self.gen_any_expr(rhs_ctx)
+                self.add_instruction('=', arg1=rhs, result=var_name)
+                return
+        # si no hay asignación, no emitimos nada (declaración sin inicializar)
+
+    def gen_function_def(self, ctx):
+        # functionDef : FUNCTION ID LPAREN paramList? RPAREN COLON returnType LBRACE statement* returnStmt RBRACE
+        name = ctx.ID().getText()
+        start_label = f"func_{name}"
+        end_label = f"end_func_{name}"
+        self.emit_label(start_label)
+
+        # guardar y establecer current_function_end_label para returns internos
+        old_end = self.current_function_end_label
+        self.current_function_end_label = end_label
+
+        # Generar statements del cuerpo (ctx.statement() recoge statements dentro)
+        for st in ctx.statement():
+            self.gen_statement(st)
+
+        # generar returnStmt
+        if hasattr(ctx, "returnStmt") and ctx.returnStmt():
+            # normalmente hay exactamente una returnStmt según la gramática
+            self.gen_return(ctx.returnStmt())
+        # asegurar etiqueta final de la función
+        self.emit_label(end_label)
+
+        # restaurar
+        self.current_function_end_label = old_end
+
+    def gen_return(self, ctx):
+        # returnStmt : RETURN (boolExpr | arithExpr) SEMI
+        # child 1 es la expresión
+        expr_ctx = ctx.getChild(1)
+        val = self.gen_any_expr(expr_ctx)
+        # emitir retorno
+        self.add_instruction('ret', arg1=val)
+        # saltar al final de la función (si tenemos etiqueta)
+        if self.current_function_end_label:
+            self.add_instruction('goto', result=self.current_function_end_label)
+
     def gen_assignment(self, ctx):
-        # ctx: assignment : ID ASSIGN (boolExpr | arithExpr) SEMI
-        # Forma simple: child0 = ID, child2 = expresion
-        var_name = ctx.getChild(0).getText()
+        # assignment : ID ASSIGN (boolExpr | arithExpr) SEMI
+        var_name = ctx.ID().getText()
         rhs_ctx = ctx.getChild(2)
-        # Determinar si es boolean or arith: por la clase del contexto no siempre fácil,
-        # así intentamos generar con los generadores y confiar en que recursión funciona.
-        if hasattr(rhs_ctx, "getText"):
-            # Si la expresión es arithExpr o boolExpr o alike:
-            rhs = self.gen_any_expr(rhs_ctx)
-        else:
-            rhs = rhs_ctx.getText()
-        # resultado asignado a la variable
+        rhs = self.gen_any_expr(rhs_ctx)
         self.add_instruction('=', arg1=rhs, result=var_name)
 
     def gen_print(self, ctx):
-        # ctx: printStmt : PRINT LPAREN ID RPAREN SEMI
-        # El ID está en child 2
-        id_name = ctx.getChild(2).getText()
+        # printStmt : PRINT LPAREN ID RPAREN SEMI
+        id_name = ctx.ID().getText()
         self.add_instruction('print', arg1=id_name)
 
     def gen_if(self, ctx):
-        # ctx: IF LPAREN boolExpr RPAREN block (ELSE block)?
+        # IF LPAREN boolExpr RPAREN block (ELSE block)?
         bool_ctx = ctx.getChild(2)
         then_block = ctx.getChild(4)
         has_else = (len(ctx.getChildren()) > 5)
@@ -101,7 +159,7 @@ class IR_Generator:
         self.emit_label(end_label)
 
     def gen_while(self, ctx):
-        # ctx: WHILE LPAREN boolExpr RPAREN block
+        # WHILE LPAREN boolExpr RPAREN block
         bool_ctx = ctx.getChild(2)
         body = ctx.getChild(4)
 
@@ -116,8 +174,7 @@ class IR_Generator:
         self.emit_label(end)
 
     def gen_block(self, ctx):
-        # ctx: LBRACE statement* RBRACE
-        # Genera código para cada statement dentro del bloque
+        # LBRACE statement* RBRACE
         for i in range(1, ctx.getChildCount() - 1):
             child = ctx.getChild(i)
             # child es un statement context
@@ -129,10 +186,8 @@ class IR_Generator:
     # ------------------------------------------------------------------
 
     def gen_any_expr(self, ctx):
-        # Determina si la expresión es booleana o aritmética por la estructura.
-        # Si contiene tokens booleanos o comparadores -> boolean; si contiene + - * / o INT/ID -> aritmética.
+        # heurística: si contiene booleanos/operadores comparadores => boolean, sino aritmética
         txt = ctx.getText()
-        # heurística simple: si contiene 'true'/'false'/'and'/'or'/'!'/'=='/'<' etc -> boolean
         if any(k in txt.lower() for k in ('true', 'false', 'and', 'or', 'not', '&&', '||', '==', '!=', '<', '>', '<=', '>=')):
             return self.gen_bool_expr(ctx)
         else:
@@ -140,7 +195,6 @@ class IR_Generator:
 
     # Arith
     def gen_arith_expr(self, ctx):
-        # arithExpr : arithExpr ADD arithTerm | arithExpr SUB arithTerm | arithTerm
         if ctx.getChildCount() == 3:
             left = self.gen_arith_expr(ctx.getChild(0))
             op = ctx.getChild(1).getText()
@@ -152,7 +206,6 @@ class IR_Generator:
             return self.gen_arith_term(ctx.getChild(0))
 
     def gen_arith_term(self, ctx):
-        # arithTerm : arithTerm MUL arithFactor | arithTerm DIV arithFactor | arithFactor
         if ctx.getChildCount() == 3:
             left = self.gen_arith_term(ctx.getChild(0))
             op = ctx.getChild(1).getText()
@@ -164,42 +217,43 @@ class IR_Generator:
             return self.gen_arith_factor(ctx.getChild(0))
 
     def gen_arith_factor(self, ctx):
-        # arithFactor : SUB arithFactor | LPAREN arithExpr RPAREN | INT | ID
+        # arithFactor : SUB arithFactor | LPAREN arithExpr RPAREN | INT | ID | functionCall
         if ctx.getChildCount() == 2:
             # unary minus
             inner = self.gen_arith_factor(ctx.getChild(1))
             res = self.new_temp()
-            # representamos negación como 0 - inner
             self.add_instruction('-', arg1='0', arg2=inner, result=res)
             return res
         elif ctx.getChildCount() == 3:
-            # paréntesis
+            # parenthesis
             return self.gen_arith_expr(ctx.getChild(1))
         else:
-            token = ctx.getChild(0).getText()
-            # INT literal o ID variable
-            return token
+            child = ctx.getChild(0)
+            # INT literal
+            if child.getText().isdigit():
+                return child.getText()
+            # function call detection: child tiene subchildren y sigue patrón ID '(' ... ')'
+            if child.getChildCount() >= 2 and child.getChild(1).getText() == '(':
+                return self.gen_function_call(child)
+            # ID variable
+            return child.getText()
 
     # Boolean
     def gen_bool_expr(self, ctx):
-        # boolExpr : boolExpr OR boolTerm | boolTerm
         if ctx.getChildCount() == 3:
             left = self.gen_bool_expr(ctx.getChild(0))
             op = ctx.getChild(1).getText().lower()
             right = self.gen_bool_term(ctx.getChild(2))
             res = self.new_temp()
-            # Usamos OR/AND evaluando ambos operandos como 0/1
             if op in ('or', '||'):
                 self.add_instruction('or', arg1=left, arg2=right, result=res)
             else:
-                # fallback
                 self.add_instruction(op, arg1=left, arg2=right, result=res)
             return res
         else:
             return self.gen_bool_term(ctx.getChild(0))
 
     def gen_bool_term(self, ctx):
-        # boolTerm : boolTerm AND boolFactor | boolFactor
         if ctx.getChildCount() == 3:
             left = self.gen_bool_term(ctx.getChild(0))
             op = ctx.getChild(1).getText().lower()
@@ -214,12 +268,11 @@ class IR_Generator:
             return self.gen_bool_factor(ctx.getChild(0))
 
     def gen_bool_factor(self, ctx):
-        # boolFactor : NOT boolFactor | LPAREN boolExpr RPAREN | TRUE | FALSE | ID | comparison
+        # NOT boolFactor | LPAREN boolExpr RPAREN | TRUE | FALSE | ID | comparison | functionCall
         if ctx.getChildCount() == 2:
             # NOT
             inner = self.gen_bool_factor(ctx.getChild(1))
             res = self.new_temp()
-            # not x => 1 if x==0 else 0 -> implementamos como comparison: x == 0
             self.add_instruction('==', arg1=inner, arg2='0', result=res)
             return res
         elif ctx.getChildCount() == 3:
@@ -228,22 +281,39 @@ class IR_Generator:
         else:
             child = ctx.getChild(0)
             txt = child.getText()
-            # Puede ser TRUE/FALSE, ID (variable booleana) o comparison (arithExpr compOp arithExpr)
             if txt.lower() in ('true', 'false'):
                 return '1' if txt.lower() == 'true' else '0'
-            # Distinguir si es comparación: si el nodo tiene 3 hijos (comparision)
-            if child.getChildCount() == 3:
+            # comparison (node con 3 hijos)
+            if child.getChildCount() == 3 and child.getChild(1).getText() in ('==', '!=', '<', '<=', '>', '>='):
                 return self.gen_comparison(child)
-            # otherwise ID
-            return txt
+            # function call detection
+            if child.getChildCount() >= 2 and child.getChild(1).getText() == '(':
+                return self.gen_function_call(child)
+            # ID variable
+            return child.getText()
 
     def gen_comparison(self, ctx):
-        # comparison : arithExpr compOp arithExpr
         left = self.gen_arith_expr(ctx.getChild(0))
         op = ctx.getChild(1).getText()
         right = self.gen_arith_expr(ctx.getChild(2))
         res = self.new_temp()
         self.add_instruction(op, arg1=left, arg2=right, result=res)
+        return res
+
+    def gen_function_call(self, ctx):
+        # functionCall : ID LPAREN argList? RPAREN
+        func_name = ctx.getChild(0).getText()
+        args = []
+        # children: ID, LPAREN, argExpr, (COMMA,argExpr)*, RPAREN
+        if ctx.getChildCount() > 3:
+            # arg positions 2,4,6,...
+            for i in range(2, ctx.getChildCount() - 1, 2):
+                arg_ctx = ctx.getChild(i)
+                arg_operand = self.gen_any_expr(arg_ctx)
+                args.append(arg_operand)
+        res = self.new_temp()
+        # arg2 guarda la lista de operandos (lista de strings o temps)
+        self.add_instruction('call', arg1=func_name, arg2=args, result=res)
         return res
 
     # ------------------------------------------------------------------
@@ -264,9 +334,13 @@ class IR_Generator:
                 output += f"  goto {inst['result']}\n"
             elif op == 'print':
                 output += f"  print {inst['arg1']}\n"
-            elif op.endswith(':'):
+            elif op == 'ret':
+                output += f"  ret {inst['arg1']}\n"
+            elif op == 'call':
+                args_repr = ", ".join(map(str, inst['arg2'] or []))
+                output += f"  {inst['result']} = call {inst['arg1']}({args_repr})\n"
+            elif isinstance(op, str) and op.endswith(':'):
                 output += f"{op}\n"
             else:
-                # fallback genérica
                 output += f"  {op} {inst.get('arg1', '')} {inst.get('arg2', '')} {inst.get('result', '')}\n"
         return output

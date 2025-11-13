@@ -1,0 +1,14 @@
+fn add(x: int, y: int): int {
+    return x + y;
+}
+
+fn isPositive(n: int): bool {
+    return n > 0;
+}
+
+a = add(5, 3);
+print(a);
+
+if (isPositive(a)) {
+    print(1);
+}

@@ -17,12 +17,84 @@ class gramaticaListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by gramaticaParser#functionDef.
+    def enterFunctionDef(self, ctx:gramaticaParser.FunctionDefContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#functionDef.
+    def exitFunctionDef(self, ctx:gramaticaParser.FunctionDefContext):
+        pass
+
+
+    # Enter a parse tree produced by gramaticaParser#paramList.
+    def enterParamList(self, ctx:gramaticaParser.ParamListContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#paramList.
+    def exitParamList(self, ctx:gramaticaParser.ParamListContext):
+        pass
+
+
+    # Enter a parse tree produced by gramaticaParser#param.
+    def enterParam(self, ctx:gramaticaParser.ParamContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#param.
+    def exitParam(self, ctx:gramaticaParser.ParamContext):
+        pass
+
+
+    # Enter a parse tree produced by gramaticaParser#paramType.
+    def enterParamType(self, ctx:gramaticaParser.ParamTypeContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#paramType.
+    def exitParamType(self, ctx:gramaticaParser.ParamTypeContext):
+        pass
+
+
+    # Enter a parse tree produced by gramaticaParser#returnType.
+    def enterReturnType(self, ctx:gramaticaParser.ReturnTypeContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#returnType.
+    def exitReturnType(self, ctx:gramaticaParser.ReturnTypeContext):
+        pass
+
+
+    # Enter a parse tree produced by gramaticaParser#returnStmt.
+    def enterReturnStmt(self, ctx:gramaticaParser.ReturnStmtContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#returnStmt.
+    def exitReturnStmt(self, ctx:gramaticaParser.ReturnStmtContext):
+        pass
+
+
     # Enter a parse tree produced by gramaticaParser#statement.
     def enterStatement(self, ctx:gramaticaParser.StatementContext):
         pass
 
     # Exit a parse tree produced by gramaticaParser#statement.
     def exitStatement(self, ctx:gramaticaParser.StatementContext):
+        pass
+
+
+    # Enter a parse tree produced by gramaticaParser#varDecl.
+    def enterVarDecl(self, ctx:gramaticaParser.VarDeclContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#varDecl.
+    def exitVarDecl(self, ctx:gramaticaParser.VarDeclContext):
+        pass
+
+
+    # Enter a parse tree produced by gramaticaParser#varType.
+    def enterVarType(self, ctx:gramaticaParser.VarTypeContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#varType.
+    def exitVarType(self, ctx:gramaticaParser.VarTypeContext):
         pass
 
 
@@ -140,6 +212,24 @@ class gramaticaListener(ParseTreeListener):
 
     # Exit a parse tree produced by gramaticaParser#arithFactor.
     def exitArithFactor(self, ctx:gramaticaParser.ArithFactorContext):
+        pass
+
+
+    # Enter a parse tree produced by gramaticaParser#functionCall.
+    def enterFunctionCall(self, ctx:gramaticaParser.FunctionCallContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#functionCall.
+    def exitFunctionCall(self, ctx:gramaticaParser.FunctionCallContext):
+        pass
+
+
+    # Enter a parse tree produced by gramaticaParser#argList.
+    def enterArgList(self, ctx:gramaticaParser.ArgListContext):
+        pass
+
+    # Exit a parse tree produced by gramaticaParser#argList.
+    def exitArgList(self, ctx:gramaticaParser.ArgListContext):
         pass
 
 

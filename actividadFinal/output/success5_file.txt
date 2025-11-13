@@ -1,0 +1,242 @@
+FASE 1: ANALISIS LEXICO
+--------------------------------------------------
+Tokens encontrados:
+   1. VAR             -> 'var'
+   2. ID              -> 'm'
+   3. COLON           -> ':'
+   4. INT_TYPE        -> 'int'
+   5. ASSIGN          -> '='
+   6. INT             -> '0'
+   7. SEMI            -> ';'
+   8. VAR             -> 'var'
+   9. ID              -> 'n'
+  10. COLON           -> ':'
+  11. INT_TYPE        -> 'int'
+  12. ASSIGN          -> '='
+  13. SUB             -> '-'
+  14. INT             -> '1'
+  15. SEMI            -> ';'
+  16. VAR             -> 'var'
+  17. ID              -> 'o'
+  18. COLON           -> ':'
+  19. INT_TYPE        -> 'int'
+  20. ASSIGN          -> '='
+  21. INT             -> '2'
+  22. SEMI            -> ';'
+  23. ID              -> 'result'
+  24. ASSIGN          -> '='
+  25. LPAREN          -> '('
+  26. ID              -> 'm'
+  27. NEQ             -> '!='
+  28. INT             -> '1'
+  29. RPAREN          -> ')'
+  30. AND             -> 'and'
+  31. LPAREN          -> '('
+  32. LPAREN          -> '('
+  33. ID              -> 'n'
+  34. ADD             -> '+'
+  35. ID              -> 'o'
+  36. RPAREN          -> ')'
+  37. GT              -> '>'
+  38. INT             -> '0'
+  39. OR              -> 'or'
+  40. LPAREN          -> '('
+  41. ID              -> 'o'
+  42. MUL             -> '*'
+  43. INT             -> '3'
+  44. LTE             -> '<='
+  45. INT             -> '6'
+  46. RPAREN          -> ')'
+  47. RPAREN          -> ')'
+  48. SEMI            -> ';'
+  49. PRINT           -> 'print'
+  50. LPAREN          -> '('
+  51. ID              -> 'result'
+  52. RPAREN          -> ')'
+  53. SEMI            -> ';'
+
+Resumen de tipos de token:
+  - ADD: 1
+  - AND: 1
+  - ASSIGN: 4
+  - COLON: 3
+  - GT: 1
+  - ID: 9
+  - INT: 7
+  - INT_TYPE: 3
+  - LPAREN: 5
+  - LTE: 1
+  - MUL: 1
+  - NEQ: 1
+  - OR: 1
+  - PRINT: 1
+  - RPAREN: 5
+  - SEMI: 5
+  - SUB: 1
+  - VAR: 3
+[OK] 53 tokens significativos generados.
+
+FASE 2: ANALISIS SINTACTICO
+--------------------------------------------------
+Estructura del Parse Tree (primeros 50 caracteres por línea):
+ProgramContext: 'varm:int=0;varn:int=-1;varo:int=2;result=(m!=1)...'
+  StatementContext: 'varm:int=0;'
+    VarDeclContext: 'varm:int=0;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'm'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '0'
+        ArithTermContext: '0'
+          ArithFactorContext: '0'
+            TerminalNodeImpl: '0'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varn:int=-1;'
+    VarDeclContext: 'varn:int=-1;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'n'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '-1'
+        ArithTermContext: '-1'
+          ArithFactorContext: '-1'
+            TerminalNodeImpl: '-'
+            ArithFactorContext: '1'
+      TerminalNodeImpl: ';'
+  StatementContext: 'varo:int=2;'
+    VarDeclContext: 'varo:int=2;'
+      TerminalNodeImpl: 'var'
+      TerminalNodeImpl: 'o'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
+      TerminalNodeImpl: '='
+      ArithExprContext: '2'
+        ArithTermContext: '2'
+          ArithFactorContext: '2'
+            TerminalNodeImpl: '2'
+      TerminalNodeImpl: ';'
+  StatementContext: 'result=(m!=1)and((n+o)>0or(o*3<=6));'
+    AssignmentContext: 'result=(m!=1)and((n+o)>0or(o*3<=6));'
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: '='
+      BoolExprContext: '(m!=1)and((n+o)>0or(o*3<=6))'
+        BoolTermContext: '(m!=1)and((n+o)>0or(o*3<=6))'
+          BoolTermContext: '(m!=1)'
+            BoolFactorContext: '(m!=1)'
+          TerminalNodeImpl: 'and'
+          BoolFactorContext: '((n+o)>0or(o*3<=6))'
+            TerminalNodeImpl: '('
+            BoolExprContext: '(n+o)>0or(o*3<=6)'
+            TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  StatementContext: 'print(result);'
+    PrintStmtContext: 'print(result);'
+      TerminalNodeImpl: 'print'
+      TerminalNodeImpl: '('
+      TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ')'
+      TerminalNodeImpl: ';'
+  TerminalNodeImpl: '<EOF>'
+[OK] Parse tree generado correctamente.
+
+FASE 3: ANALISIS SEMANTICO
+--------------------------------------------------
+[OK] No se encontraron errores semánticos.
+
+Tabla de Símbolos:
+--------------------------------------------------
+Scope 'global':
+   <Symbol(name='m', type='int', category='variable')>
+   <Symbol(name='n', type='int', category='variable')>
+   <Symbol(name='o', type='int', category='variable')>
+   <Symbol(name='result', type='bool', category='variable')>
+
+FASE 4: GENERACION DE CODIGO INTERMEDIO (TAC)
+--------------------------------------------------
+## CÓDIGO INTERMEDIO (TAC)
+  m = 0
+  t0 = 0 - 1
+  n = t0
+  o = 2
+  t1 = m != 1
+  t2 = n + o
+  t3 = t2 > 0
+  t4 = o * 3
+  t5 = t4 <= 6
+  t6 = t3 or t5
+  t7 = t1 and t6
+  result = t7
+  print result
+
+[OK] 13 instrucciones TAC generadas.
+
+FASE 5: GENERACION DE CODIGO PYTHON
+--------------------------------------------------
+Código Python generado y guardado en 'output/success5.py':
+
+==================================================
+# Código generado automáticamente
+
+def main():
+    # Variables de usuario
+    m = 0
+    n = 0
+    o = 0
+    result = 0
+    
+    m = 0
+    t0 = 0 - 1
+    n = t0
+    o = 2
+    t1 = m != 1
+    t2 = n + o
+    t3 = t2 > 0
+    t4 = o * 3
+    t5 = t4 <= 6
+    t6 = t3 or t5
+    t7 = t1 and t6
+    result = t7
+    print(result)
+    
+    # Estado final de variables:
+    try:
+        print(f'm = {m}')
+    except NameError:
+        pass
+    try:
+        print(f'n = {n}')
+    except NameError:
+        pass
+    try:
+        print(f'o = {o}')
+    except NameError:
+        pass
+    try:
+        print(f'result = {result}')
+    except NameError:
+        pass
+    return 0
+
+if __name__ == '__main__':
+    main()
+==================================================
+
+[OK] Generación de código completada.
+
+RESUMEN DE COMPILACION
+--------------------------------------------------
+✓ Archivo de entrada:    input/success5.txt
+✓ Análisis léxico:       53 tokens generados
+✓ Análisis sintáctico:   Parse tree completado
+✓ Análisis semántico:    0 errores encontrados
+✓ Código intermedio:     13 instrucciones TAC
+✓ Código Python:         Archivo 'output/success5.py' generado
+✓ Log de compilación:    Archivo 'output/success5_file.txt' generado
+--------------------------------------------------
+[SUCCESS] Compilación completada exitosamente.
+
