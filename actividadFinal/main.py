@@ -34,7 +34,7 @@ def main():
     os.makedirs("output", exist_ok=True)
     
     # Seleccionar el archivo de entrada
-    input_file = "input/inputS1.txt"
+    input_file = "input/success12.txt"
     input_filename = os.path.splitext(os.path.basename(input_file))[0]
     
     # Generar nombres de para archivos de salida

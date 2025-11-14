@@ -1,5 +1,5 @@
 var p: int = 7;
 var q: int = 7;
 var r: int = 1;
-result = not ( (p == q) and ( (q - r) <= 6 ) ) or false;
+var result: bool = not ( (p == q) and ( (q - r) <= 6 ) ) or false;
 print(result);

@@ -2,5 +2,5 @@ var a: int = 5;
 var b: int = 3;
 var c: int = 2;
 var d: int = 0;
-result = (a + b * -c > 10) and not (d == 0 or b < -1);
+var result: bool = (a + b * -c > 10) and not (d == 0 or b < -1);
 print(result);

@@ -1,5 +1,5 @@
 var m: int = 0;
 var n: int = -1;
 var o: int = 2;
-result = (m != 1) and ((n + o) > 0 or (o * 3 <= 6));
+var result: bool = (m != 1) and ((n + o) > 0 or (o * 3 <= 6));
 print(result);

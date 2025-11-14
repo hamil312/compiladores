@@ -5,5 +5,5 @@ fn xor(a: bool, b: bool): bool {
 var u: bool = true;
 var v: bool = false;
 
-result = xor(u, v) or (u and v);
+var result: bool = xor(u, v) or (u and v);
 print(result);

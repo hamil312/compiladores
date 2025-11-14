@@ -4,5 +4,5 @@ var c: int = 3;
 var d: int = 5;
 var e: int = 0;
 
-result = not ((a + b * c) <= (d - e)) or (b > c and e == 0);
+var result: bool = not ((a + b * c) <= (d - e)) or (b > c and e == 0);
 print(result);

@@ -5,5 +5,5 @@ fn both_true(a: bool, b: bool): bool {
 var x: bool = true;
 var y: bool = true;
 
-result = both_true(x, y) and not false;
+var result: bool = both_true(x, y) and not false;
 print(result);

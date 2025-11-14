@@ -7,5 +7,5 @@ var b: int = 7;
 var c: int = 5;
 var d: int = 12;
 
-result = (sum(a, b) > c) or not (sum(b, c) <= d);
+var result: bool = (sum(a, b) > c) or not (sum(b, c) <= d);
 print(result);
