@@ -306,26 +306,26 @@ def main(): #Función principal donde se instancia el analizador y se realizan l
     #print("## TAC Código Intermedio")
     #print(analizador.ir)
 
-    print("## 🔤 TOKENS")
-    for token in stream.tokens: #Por cada token definido en el stream
-        if token.type != Token.EOF: #Si el token no es un final de archivo
-            print(f"  - {lexer.symbolicNames[token.type]} ('{token.text}') @line {token.line}:{token.column}") #Se imprime el token
+    #print("## 🔤 TOKENS")
+    #for token in stream.tokens: #Por cada token definido en el stream
+    #    if token.type != Token.EOF: #Si el token no es un final de archivo
+    #        print(f"  - {lexer.symbolicNames[token.type]} ('{token.text}') @line {token.line}:{token.column}") #Se imprime el token
 
-    print("\n## 🌳 ÁRBOL SINTÁCTICO (toStringTree)")
-    print(tree.toStringTree(recog=parser)) #Imprimimos el arbol que hemos estado creando desde el inicio, primero como una cadena
+    #print("\n## 🌳 ÁRBOL SINTÁCTICO (toStringTree)")
+    #print(tree.toStringTree(recog=parser)) #Imprimimos el arbol que hemos estado creando desde el inicio, primero como una cadena
 
-    def pretty_tree(node, rule_names, level=0): #Una función que permite crear un arbol mejor organizado
-        if isinstance(node, TerminalNode): #Se verifica si el nodo es un nodo terminal
-            return "  " * level + f"TOKEN({node.getText()})" #Se retorna una cadena indentada según la cantidad de niveles del arbol, despues de los espacios se escribe el texto
-        else:
-            rule_name = rule_names[node.getRuleIndex()] #Si el nodo no es terminal se obtienen las reglas del nodo
-            result = "  " * level + rule_name #El resultado es una oración indentada según la cantidad de niveles del arbol y que contiene el nombre de la regla
-            for child in node.children or []: #Por cada nodo dentro del nodo
-                result += "\n" + pretty_tree(child, rule_names, level + 1) #Se retorna como resultado la misma función a la que se le aplican las reglas y se le pasa el nodo hijo obtenido, además de aumentar el nivel para poder aumentar la indentación y mostrar el orden
-            return result
+    #def pretty_tree(node, rule_names, level=0): #Una función que permite crear un arbol mejor organizado
+    #    if isinstance(node, TerminalNode): #Se verifica si el nodo es un nodo terminal
+    #        return "  " * level + f"TOKEN({node.getText()})" #Se retorna una cadena indentada según la cantidad de niveles del arbol, despues de los espacios se escribe el texto
+    #    else:
+    #        rule_name = rule_names[node.getRuleIndex()] #Si el nodo no es terminal se obtienen las reglas del nodo
+    #        result = "  " * level + rule_name #El resultado es una oración indentada según la cantidad de niveles del arbol y que contiene el nombre de la regla
+    #        for child in node.children or []: #Por cada nodo dentro del nodo
+    #            result += "\n" + pretty_tree(child, rule_names, level + 1) #Se retorna como resultado la misma función a la que se le aplican las reglas y se le pasa el nodo hijo obtenido, además de aumentar el nivel para poder aumentar la indentación y mostrar el orden
+    #        return result
 
-    print("\n## 🌲 ÁRBOL SINTÁCTICO (Indentado)")
-    print(pretty_tree(tree, parser.ruleNames)) #Se usa la función para generar el arbol ordenado
+    #print("\n## 🌲 ÁRBOL SINTÁCTICO (Indentado)")
+    #print(pretty_tree(tree, parser.ruleNames)) #Se usa la función para generar el arbol ordenado
 
 if __name__ == "__main__":
     main() #Se ejecuta la función principal

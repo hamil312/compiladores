@@ -33,11 +33,11 @@ def main():
     os.makedirs("input", exist_ok=True)
     os.makedirs("output", exist_ok=True)
     
-    # Buscar primer archivo .txt en la carpeta input/
-    input_file = "input/failure13.txt"
+    # Seleccionar el archivo de entrada
+    input_file = "input/inputS1.txt"
     input_filename = os.path.splitext(os.path.basename(input_file))[0]
     
-    # Generar nombres de salida
+    # Generar nombres de para archivos de salida
     output_py_file = os.path.join("output", f"{input_filename}.py")
     output_log_file = os.path.join("output", f"{input_filename}_file.txt")
     
@@ -65,7 +65,7 @@ def main():
         stream.fill()
         print("Tokens encontrados:")
         
-        # Mapeo actualizado para coincidir con tu gramática (desde gramaticaLexer)
+        # Mapeo actualizado para coincidir con la gramática
         token_name_map = {
             1: "FUNCTION",
             2: "RETURN",
@@ -108,7 +108,7 @@ def main():
         
         token_types = {}
         visible_token_count = 0
-        
+        # Iteramos por los tokens, verificando que coincidan con los tipos existentes y contando aquellos que son visibles
         for token in stream.tokens[:-1]:  # Excluir EOF
             token_name = token_name_map.get(token.type, f"UNKNOWN_{token.type}")
             

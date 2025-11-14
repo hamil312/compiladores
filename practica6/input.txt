@@ -1,0 +1,8 @@
+int x = 10;
+int y = 20;
+int suma = x + y;
+if (suma > 25) {
+    int resultado = suma * 2;
+} else {
+    int resultado = suma / 2;
+}

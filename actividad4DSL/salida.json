@@ -103,23 +103,6 @@
       "Descalificado": false
     },
     {
-      "CorredorID": "C-07",
-      "Nombre": "Luis",
-      "Edad": 35,
-      "Pais": "Brasil",
-      "Categoria": "Profesional",
-      "TiempoSegundos": 2240,
-      "PosiciónFinal": 7,
-      "MejorVuelta": 450,
-      "PrimeraVuelta": 440,
-      "SegundaVuelta": 450,
-      "TerceraVuelta": 460,
-      "CuartaVuelta": 450,
-      "QuintaVuelta": 440,
-      "PenalizacionSegundos": 0,
-      "Descalificado": false
-    },
-    {
       "CorredorID": "C-08",
       "Nombre": "Elena",
       "Edad": 26,
@@ -169,29 +152,19 @@
       "QuintaVuelta": 430,
       "PenalizacionSegundos": 0,
       "Descalificado": false
-    },
-    {
-      "CorredorID": "C-11",
-      "Nombre": "Andres",
-      "Edad": 33,
-      "Pais": "Colombia",
-      "Categoria": "Aficionado",
-      "TiempoSegundos": 2145,
-      "PosiciónFinal": 9,
-      "MejorVuelta": 430,
-      "PrimeraVuelta": 430,
-      "SegundaVuelta": 430,
-      "TerceraVuelta": 425,
-      "CuartaVuelta": 430,
-      "QuintaVuelta": 430,
-      "PenalizacionSegundos": 0,
-      "Descalificado": false
     }
   ],
   "summary": {
     "duplicate_rows_count": 0,
-    "duplicate_rows_by_content": 0,
-    "malformed_fields": [],
+    "duplicate_rows_by_content": 1,
+    "malformed_fields": [
+      [
+        8,
+        "ROW_LENGTH",
+        "C-07,Luis,35,Brasil,Profesional,1400,7,450,440,450,,450,440,0,No",
+        "cantidad_campos"
+      ]
+    ],
     "best_time": {
       "CorredorID": "C-06",
       "Nombre": "Diego",
@@ -330,23 +303,6 @@
         "QuintaVuelta": 440,
         "PenalizacionSegundos": 0,
         "Descalificado": false
-      },
-      "Brasil": {
-        "CorredorID": "C-07",
-        "Nombre": "Luis",
-        "Edad": 35,
-        "Pais": "Brasil",
-        "Categoria": "Profesional",
-        "TiempoSegundos": 2240,
-        "PosiciónFinal": 7,
-        "MejorVuelta": 450,
-        "PrimeraVuelta": 440,
-        "SegundaVuelta": 450,
-        "TerceraVuelta": 460,
-        "CuartaVuelta": 450,
-        "QuintaVuelta": 440,
-        "PenalizacionSegundos": 0,
-        "Descalificado": false
       }
     },
     "youngest": {
@@ -367,19 +323,19 @@
       "Descalificado": false
     },
     "oldest": {
-      "CorredorID": "C-07",
-      "Nombre": "Luis",
-      "Edad": 35,
-      "Pais": "Brasil",
-      "Categoria": "Profesional",
-      "TiempoSegundos": 2240,
-      "PosiciónFinal": 7,
-      "MejorVuelta": 450,
-      "PrimeraVuelta": 440,
-      "SegundaVuelta": 450,
-      "TerceraVuelta": 460,
-      "CuartaVuelta": 450,
-      "QuintaVuelta": 440,
+      "CorredorID": "C-10",
+      "Nombre": "Andres",
+      "Edad": 33,
+      "Pais": "Colombia",
+      "Categoria": "Aficionado",
+      "TiempoSegundos": 2145,
+      "PosiciónFinal": 9,
+      "MejorVuelta": 430,
+      "PrimeraVuelta": 430,
+      "SegundaVuelta": 430,
+      "TerceraVuelta": 425,
+      "CuartaVuelta": 430,
+      "QuintaVuelta": 430,
       "PenalizacionSegundos": 0,
       "Descalificado": false
     },
@@ -401,11 +357,11 @@
       "Descalificado": false
     },
     "tiempos_estadisticas": {
-      "promedio": 1983.5,
-      "mediana": 2135.0,
-      "moda": 2145,
-      "desviacion_estandar": 280.06001340982453,
-      "varianza": 78433.61111111111
+      "promedio": 1931.25,
+      "mediana": 2107.5,
+      "moda": null,
+      "desviacion_estandar": 290.8577217226909,
+      "varianza": 84598.21428571429
     }
   }
 }

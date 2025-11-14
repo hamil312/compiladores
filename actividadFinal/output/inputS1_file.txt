@@ -37,47 +37,50 @@ Tokens encontrados:
   34. INT             -> '0'
   35. SEMI            -> ';'
   36. RBRACE          -> '}'
-  37. ID              -> 'a'
-  38. ASSIGN          -> '='
-  39. ID              -> 'add'
-  40. LPAREN          -> '('
-  41. INT             -> '5'
-  42. COMMA           -> ','
-  43. INT             -> '3'
-  44. RPAREN          -> ')'
-  45. SEMI            -> ';'
-  46. PRINT           -> 'print'
-  47. LPAREN          -> '('
-  48. ID              -> 'a'
-  49. RPAREN          -> ')'
-  50. SEMI            -> ';'
-  51. IF              -> 'if'
-  52. LPAREN          -> '('
-  53. ID              -> 'isPositive'
-  54. LPAREN          -> '('
-  55. ID              -> 'a'
-  56. RPAREN          -> ')'
-  57. RPAREN          -> ')'
-  58. LBRACE          -> '{'
-  59. PRINT           -> 'print'
-  60. LPAREN          -> '('
-  61. INT             -> '1'
-  62. RPAREN          -> ')'
-  63. SEMI            -> ';'
-  64. RBRACE          -> '}'
+  37. VAR             -> 'var'
+  38. ID              -> 'a'
+  39. COLON           -> ':'
+  40. INT_TYPE        -> 'int'
+  41. ASSIGN          -> '='
+  42. ID              -> 'add'
+  43. LPAREN          -> '('
+  44. INT             -> '5'
+  45. COMMA           -> ','
+  46. INT             -> '3'
+  47. RPAREN          -> ')'
+  48. SEMI            -> ';'
+  49. PRINT           -> 'print'
+  50. LPAREN          -> '('
+  51. ID              -> 'a'
+  52. RPAREN          -> ')'
+  53. SEMI            -> ';'
+  54. IF              -> 'if'
+  55. LPAREN          -> '('
+  56. ID              -> 'isPositive'
+  57. LPAREN          -> '('
+  58. ID              -> 'a'
+  59. RPAREN          -> ')'
+  60. RPAREN          -> ')'
+  61. LBRACE          -> '{'
+  62. PRINT           -> 'print'
+  63. LPAREN          -> '('
+  64. INT             -> '1'
+  65. RPAREN          -> ')'
+  66. SEMI            -> ';'
+  67. RBRACE          -> '}'
 
 Resumen de tipos de token:
   - ADD: 1
   - ASSIGN: 1
   - BOOL_TYPE: 1
-  - COLON: 5
+  - COLON: 6
   - COMMA: 2
   - FUNCTION: 2
   - GT: 1
   - ID: 13
   - IF: 1
   - INT: 4
-  - INT_TYPE: 4
+  - INT_TYPE: 5
   - LBRACE: 3
   - LPAREN: 7
   - PRINT: 2
@@ -85,7 +88,8 @@ Resumen de tipos de token:
   - RETURN: 2
   - RPAREN: 7
   - SEMI: 5
-[OK] 64 tokens significativos generados.
+  - VAR: 1
+[OK] 67 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
@@ -147,9 +151,13 @@ ProgramContext: 'fnadd(x:int,y:int):int{returnx+y;}fnisPositive(...'
             ComparisonContext: 'n>0'
       TerminalNodeImpl: ';'
     TerminalNodeImpl: '}'
-  StatementContext: 'a=add(5,3);'
-    AssignmentContext: 'a=add(5,3);'
+  StatementContext: 'vara:int=add(5,3);'
+    VarDeclContext: 'vara:int=add(5,3);'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'a'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'int'
+        TerminalNodeImpl: 'int'
       TerminalNodeImpl: '='
       BoolExprContext: 'add(5,3)'
         BoolTermContext: 'add(5,3)'
@@ -207,7 +215,7 @@ end_func_add:
 func_isPositive:
   t1 = n > 0
   ret t1
-  goto end_func_isPositive
+  goto end_func_isPositivse
 end_func_isPositive:
   t2 = call add(5, 3)
   a = t2
@@ -267,7 +275,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/inputS1.txt
-✓ Análisis léxico:       64 tokens generados
+✓ Análisis léxico:       67 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     17 instrucciones TAC
