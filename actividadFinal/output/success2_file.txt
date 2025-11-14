@@ -29,42 +29,46 @@ Tokens encontrados:
   26. ASSIGN          -> '='
   27. INT             -> '0'
   28. SEMI            -> ';'
-  29. ID              -> 'result'
-  30. ASSIGN          -> '='
-  31. LPAREN          -> '('
-  32. ID              -> 'a'
-  33. ADD             -> '+'
-  34. ID              -> 'b'
-  35. MUL             -> '*'
-  36. SUB             -> '-'
-  37. ID              -> 'c'
-  38. GT              -> '>'
-  39. INT             -> '10'
-  40. RPAREN          -> ')'
-  41. AND             -> 'and'
-  42. NOT             -> 'not'
-  43. LPAREN          -> '('
-  44. ID              -> 'd'
-  45. EQ              -> '=='
-  46. INT             -> '0'
-  47. OR              -> 'or'
-  48. ID              -> 'b'
-  49. LT              -> '<'
-  50. SUB             -> '-'
-  51. INT             -> '1'
-  52. RPAREN          -> ')'
-  53. SEMI            -> ';'
-  54. PRINT           -> 'print'
-  55. LPAREN          -> '('
-  56. ID              -> 'result'
-  57. RPAREN          -> ')'
-  58. SEMI            -> ';'
+  29. VAR             -> 'var'
+  30. ID              -> 'result'
+  31. COLON           -> ':'
+  32. BOOL_TYPE       -> 'bool'
+  33. ASSIGN          -> '='
+  34. LPAREN          -> '('
+  35. ID              -> 'a'
+  36. ADD             -> '+'
+  37. ID              -> 'b'
+  38. MUL             -> '*'
+  39. SUB             -> '-'
+  40. ID              -> 'c'
+  41. GT              -> '>'
+  42. INT             -> '10'
+  43. RPAREN          -> ')'
+  44. AND             -> 'and'
+  45. NOT             -> 'not'
+  46. LPAREN          -> '('
+  47. ID              -> 'd'
+  48. EQ              -> '=='
+  49. INT             -> '0'
+  50. OR              -> 'or'
+  51. ID              -> 'b'
+  52. LT              -> '<'
+  53. SUB             -> '-'
+  54. INT             -> '1'
+  55. RPAREN          -> ')'
+  56. SEMI            -> ';'
+  57. PRINT           -> 'print'
+  58. LPAREN          -> '('
+  59. ID              -> 'result'
+  60. RPAREN          -> ')'
+  61. SEMI            -> ';'
 
 Resumen de tipos de token:
   - ADD: 1
   - AND: 1
   - ASSIGN: 5
-  - COLON: 4
+  - BOOL_TYPE: 1
+  - COLON: 5
   - EQ: 1
   - GT: 1
   - ID: 11
@@ -79,13 +83,13 @@ Resumen de tipos de token:
   - RPAREN: 3
   - SEMI: 6
   - SUB: 2
-  - VAR: 4
-[OK] 58 tokens significativos generados.
+  - VAR: 5
+[OK] 61 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
 Estructura del Parse Tree (primeros 50 caracteres por línea):
-ProgramContext: 'vara:int=5;varb:int=3;varc:int=2;vard:int=0;res...'
+ProgramContext: 'vara:int=5;varb:int=3;varc:int=2;vard:int=0;var...'
   StatementContext: 'vara:int=5;'
     VarDeclContext: 'vara:int=5;'
       TerminalNodeImpl: 'var'
@@ -138,9 +142,13 @@ ProgramContext: 'vara:int=5;varb:int=3;varc:int=2;vard:int=0;res...'
           ArithFactorContext: '0'
             TerminalNodeImpl: '0'
       TerminalNodeImpl: ';'
-  StatementContext: 'result=(a+b*-c>10)andnot(d==0orb<-1);'
-    AssignmentContext: 'result=(a+b*-c>10)andnot(d==0orb<-1);'
+  StatementContext: 'varresult:bool=(a+b*-c>10)andnot(d==0orb<-1);'
+    VarDeclContext: 'varresult:bool=(a+b*-c>10)andnot(d==0orb<-1);'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
       TerminalNodeImpl: '='
       BoolExprContext: '(a+b*-c>10)andnot(d==0orb<-1)'
         BoolTermContext: '(a+b*-c>10)andnot(d==0orb<-1)'
@@ -260,7 +268,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/success2.txt
-✓ Análisis léxico:       58 tokens generados
+✓ Análisis léxico:       61 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     16 instrucciones TAC

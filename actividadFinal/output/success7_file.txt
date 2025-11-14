@@ -49,42 +49,45 @@ Tokens encontrados:
   46. ASSIGN          -> '='
   47. INT             -> '1'
   48. SEMI            -> ';'
-  49. ID              -> 'result'
-  50. ASSIGN          -> '='
-  51. LPAREN          -> '('
-  52. ID              -> 'isGreater'
-  53. LPAREN          -> '('
-  54. ID              -> 'a'
-  55. COMMA           -> ','
-  56. ID              -> 'b'
-  57. RPAREN          -> ')'
-  58. OR              -> 'or'
-  59. ID              -> 'isGreater'
-  60. LPAREN          -> '('
-  61. ID              -> 'b'
-  62. COMMA           -> ','
-  63. ID              -> 'c'
-  64. RPAREN          -> ')'
-  65. RPAREN          -> ')'
-  66. AND             -> 'and'
-  67. NOT             -> 'not'
-  68. LPAREN          -> '('
-  69. ID              -> 'd'
-  70. EQ              -> '=='
-  71. INT             -> '0'
-  72. RPAREN          -> ')'
-  73. SEMI            -> ';'
-  74. PRINT           -> 'print'
-  75. LPAREN          -> '('
-  76. ID              -> 'result'
-  77. RPAREN          -> ')'
-  78. SEMI            -> ';'
+  49. VAR             -> 'var'
+  50. ID              -> 'result'
+  51. COLON           -> ':'
+  52. BOOL_TYPE       -> 'bool'
+  53. ASSIGN          -> '='
+  54. LPAREN          -> '('
+  55. ID              -> 'isGreater'
+  56. LPAREN          -> '('
+  57. ID              -> 'a'
+  58. COMMA           -> ','
+  59. ID              -> 'b'
+  60. RPAREN          -> ')'
+  61. OR              -> 'or'
+  62. ID              -> 'isGreater'
+  63. LPAREN          -> '('
+  64. ID              -> 'b'
+  65. COMMA           -> ','
+  66. ID              -> 'c'
+  67. RPAREN          -> ')'
+  68. RPAREN          -> ')'
+  69. AND             -> 'and'
+  70. NOT             -> 'not'
+  71. LPAREN          -> '('
+  72. ID              -> 'd'
+  73. EQ              -> '=='
+  74. INT             -> '0'
+  75. RPAREN          -> ')'
+  76. SEMI            -> ';'
+  77. PRINT           -> 'print'
+  78. LPAREN          -> '('
+  79. ID              -> 'result'
+  80. RPAREN          -> ')'
+  81. SEMI            -> ';'
 
 Resumen de tipos de token:
   - AND: 1
   - ASSIGN: 5
-  - BOOL_TYPE: 1
-  - COLON: 7
+  - BOOL_TYPE: 2
+  - COLON: 8
   - COMMA: 3
   - EQ: 1
   - FUNCTION: 1
@@ -101,8 +104,8 @@ Resumen de tipos de token:
   - RETURN: 1
   - RPAREN: 6
   - SEMI: 7
-  - VAR: 4
-[OK] 78 tokens significativos generados.
+  - VAR: 5
+[OK] 81 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
@@ -189,9 +192,13 @@ ProgramContext: 'fnisGreater(x:int,y:int):bool{returnx>y;}vara:i...'
           ArithFactorContext: '1'
             TerminalNodeImpl: '1'
       TerminalNodeImpl: ';'
-  StatementContext: 'result=(isGreater(a,b)orisGreater(b,c))andnot(d...'
-    AssignmentContext: 'result=(isGreater(a,b)orisGreater(b,c))andnot(d...'
+  StatementContext: 'varresult:bool=(isGreater(a,b)orisGreater(b,c))...'
+    VarDeclContext: 'varresult:bool=(isGreater(a,b)orisGreater(b,c))...'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
       TerminalNodeImpl: '='
       BoolExprContext: '(isGreater(a,b)orisGreater(b,c))andnot(d==0)'
         BoolTermContext: '(isGreater(a,b)orisGreater(b,c))andnot(d==0)'
@@ -316,7 +323,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/success7.txt
-✓ Análisis léxico:       78 tokens generados
+✓ Análisis léxico:       81 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     17 instrucciones TAC

@@ -49,41 +49,45 @@ Tokens encontrados:
   46. ASSIGN          -> '='
   47. INT             -> '12'
   48. SEMI            -> ';'
-  49. ID              -> 'result'
-  50. ASSIGN          -> '='
-  51. LPAREN          -> '('
-  52. ID              -> 'sum'
-  53. LPAREN          -> '('
-  54. ID              -> 'a'
-  55. COMMA           -> ','
-  56. ID              -> 'b'
-  57. RPAREN          -> ')'
-  58. GT              -> '>'
-  59. ID              -> 'c'
+  49. VAR             -> 'var'
+  50. ID              -> 'result'
+  51. COLON           -> ':'
+  52. BOOL_TYPE       -> 'bool'
+  53. ASSIGN          -> '='
+  54. LPAREN          -> '('
+  55. ID              -> 'sum'
+  56. LPAREN          -> '('
+  57. ID              -> 'a'
+  58. COMMA           -> ','
+  59. ID              -> 'b'
   60. RPAREN          -> ')'
-  61. OR              -> 'or'
-  62. NOT             -> 'not'
-  63. LPAREN          -> '('
-  64. ID              -> 'sum'
-  65. LPAREN          -> '('
-  66. ID              -> 'b'
-  67. COMMA           -> ','
-  68. ID              -> 'c'
-  69. RPAREN          -> ')'
-  70. LTE             -> '<='
-  71. ID              -> 'd'
+  61. GT              -> '>'
+  62. ID              -> 'c'
+  63. RPAREN          -> ')'
+  64. OR              -> 'or'
+  65. NOT             -> 'not'
+  66. LPAREN          -> '('
+  67. ID              -> 'sum'
+  68. LPAREN          -> '('
+  69. ID              -> 'b'
+  70. COMMA           -> ','
+  71. ID              -> 'c'
   72. RPAREN          -> ')'
-  73. SEMI            -> ';'
-  74. PRINT           -> 'print'
-  75. LPAREN          -> '('
-  76. ID              -> 'result'
-  77. RPAREN          -> ')'
-  78. SEMI            -> ';'
+  73. LTE             -> '<='
+  74. ID              -> 'd'
+  75. RPAREN          -> ')'
+  76. SEMI            -> ';'
+  77. PRINT           -> 'print'
+  78. LPAREN          -> '('
+  79. ID              -> 'result'
+  80. RPAREN          -> ')'
+  81. SEMI            -> ';'
 
 Resumen de tipos de token:
   - ADD: 1
   - ASSIGN: 5
-  - COLON: 7
+  - BOOL_TYPE: 1
+  - COLON: 8
   - COMMA: 3
   - FUNCTION: 1
   - GT: 1
@@ -100,8 +104,8 @@ Resumen de tipos de token:
   - RETURN: 1
   - RPAREN: 6
   - SEMI: 7
-  - VAR: 4
-[OK] 78 tokens significativos generados.
+  - VAR: 5
+[OK] 81 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
@@ -192,9 +196,13 @@ ProgramContext: 'fnsum(x:int,y:int):int{returnx+y;}vara:int=2;va...'
           ArithFactorContext: '12'
             TerminalNodeImpl: '12'
       TerminalNodeImpl: ';'
-  StatementContext: 'result=(sum(a,b)>c)ornot(sum(b,c)<=d);'
-    AssignmentContext: 'result=(sum(a,b)>c)ornot(sum(b,c)<=d);'
+  StatementContext: 'varresult:bool=(sum(a,b)>c)ornot(sum(b,c)<=d);'
+    VarDeclContext: 'varresult:bool=(sum(a,b)>c)ornot(sum(b,c)<=d);'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
       TerminalNodeImpl: '='
       BoolExprContext: '(sum(a,b)>c)ornot(sum(b,c)<=d)'
         BoolExprContext: '(sum(a,b)>c)'
@@ -320,7 +328,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/success10.txt
-✓ Análisis léxico:       78 tokens generados
+✓ Análisis léxico:       81 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     17 instrucciones TAC

@@ -35,29 +35,32 @@ Tokens encontrados:
   32. ASSIGN          -> '='
   33. TRUE            -> 'true'
   34. SEMI            -> ';'
-  35. ID              -> 'result'
-  36. ASSIGN          -> '='
-  37. ID              -> 'both_true'
-  38. LPAREN          -> '('
-  39. ID              -> 'x'
-  40. COMMA           -> ','
-  41. ID              -> 'y'
-  42. RPAREN          -> ')'
-  43. AND             -> 'and'
-  44. NOT             -> 'not'
-  45. FALSE           -> 'false'
-  46. SEMI            -> ';'
-  47. PRINT           -> 'print'
-  48. LPAREN          -> '('
-  49. ID              -> 'result'
-  50. RPAREN          -> ')'
-  51. SEMI            -> ';'
+  35. VAR             -> 'var'
+  36. ID              -> 'result'
+  37. COLON           -> ':'
+  38. BOOL_TYPE       -> 'bool'
+  39. ASSIGN          -> '='
+  40. ID              -> 'both_true'
+  41. LPAREN          -> '('
+  42. ID              -> 'x'
+  43. COMMA           -> ','
+  44. ID              -> 'y'
+  45. RPAREN          -> ')'
+  46. AND             -> 'and'
+  47. NOT             -> 'not'
+  48. FALSE           -> 'false'
+  49. SEMI            -> ';'
+  50. PRINT           -> 'print'
+  51. LPAREN          -> '('
+  52. ID              -> 'result'
+  53. RPAREN          -> ')'
+  54. SEMI            -> ';'
 
 Resumen de tipos de token:
   - AND: 2
   - ASSIGN: 3
-  - BOOL_TYPE: 5
-  - COLON: 5
+  - BOOL_TYPE: 6
+  - COLON: 6
   - COMMA: 2
   - FALSE: 1
   - FUNCTION: 1
@@ -71,8 +74,8 @@ Resumen de tipos de token:
   - RPAREN: 3
   - SEMI: 5
   - TRUE: 2
-  - VAR: 2
-[OK] 51 tokens significativos generados.
+  - VAR: 3
+[OK] 54 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
@@ -136,9 +139,13 @@ ProgramContext: 'fnboth_true(a:bool,b:bool):bool{returnaandb;}va...'
           BoolFactorContext: 'true'
             TerminalNodeImpl: 'true'
       TerminalNodeImpl: ';'
-  StatementContext: 'result=both_true(x,y)andnotfalse;'
-    AssignmentContext: 'result=both_true(x,y)andnotfalse;'
+  StatementContext: 'varresult:bool=both_true(x,y)andnotfalse;'
+    VarDeclContext: 'varresult:bool=both_true(x,y)andnotfalse;'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
       TerminalNodeImpl: '='
       BoolExprContext: 'both_true(x,y)andnotfalse'
         BoolTermContext: 'both_true(x,y)andnotfalse'
@@ -241,7 +248,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/success12.txt
-✓ Análisis léxico:       51 tokens generados
+✓ Análisis léxico:       54 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     12 instrucciones TAC

@@ -22,39 +22,43 @@ Tokens encontrados:
   19. ASSIGN          -> '='
   20. INT             -> '1'
   21. SEMI            -> ';'
-  22. ID              -> 'result'
-  23. ASSIGN          -> '='
-  24. NOT             -> 'not'
-  25. LPAREN          -> '('
-  26. LPAREN          -> '('
-  27. ID              -> 'p'
-  28. EQ              -> '=='
-  29. ID              -> 'q'
-  30. RPAREN          -> ')'
-  31. AND             -> 'and'
-  32. LPAREN          -> '('
-  33. LPAREN          -> '('
-  34. ID              -> 'q'
-  35. SUB             -> '-'
-  36. ID              -> 'r'
-  37. RPAREN          -> ')'
-  38. LTE             -> '<='
-  39. INT             -> '6'
+  22. VAR             -> 'var'
+  23. ID              -> 'result'
+  24. COLON           -> ':'
+  25. BOOL_TYPE       -> 'bool'
+  26. ASSIGN          -> '='
+  27. NOT             -> 'not'
+  28. LPAREN          -> '('
+  29. LPAREN          -> '('
+  30. ID              -> 'p'
+  31. EQ              -> '=='
+  32. ID              -> 'q'
+  33. RPAREN          -> ')'
+  34. AND             -> 'and'
+  35. LPAREN          -> '('
+  36. LPAREN          -> '('
+  37. ID              -> 'q'
+  38. SUB             -> '-'
+  39. ID              -> 'r'
   40. RPAREN          -> ')'
-  41. RPAREN          -> ')'
-  42. OR              -> 'or'
-  43. FALSE           -> 'false'
-  44. SEMI            -> ';'
-  45. PRINT           -> 'print'
-  46. LPAREN          -> '('
-  47. ID              -> 'result'
-  48. RPAREN          -> ')'
-  49. SEMI            -> ';'
+  41. LTE             -> '<='
+  42. INT             -> '6'
+  43. RPAREN          -> ')'
+  44. RPAREN          -> ')'
+  45. OR              -> 'or'
+  46. FALSE           -> 'false'
+  47. SEMI            -> ';'
+  48. PRINT           -> 'print'
+  49. LPAREN          -> '('
+  50. ID              -> 'result'
+  51. RPAREN          -> ')'
+  52. SEMI            -> ';'
 
 Resumen de tipos de token:
   - AND: 1
   - ASSIGN: 4
-  - COLON: 3
+  - BOOL_TYPE: 1
+  - COLON: 4
   - EQ: 1
   - FALSE: 1
   - ID: 9
@@ -68,13 +72,13 @@ Resumen de tipos de token:
   - RPAREN: 5
   - SEMI: 5
   - SUB: 1
-  - VAR: 3
-[OK] 49 tokens significativos generados.
+  - VAR: 4
+[OK] 52 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
 Estructura del Parse Tree (primeros 50 caracteres por línea):
-ProgramContext: 'varp:int=7;varq:int=7;varr:int=1;result=not((p=...'
+ProgramContext: 'varp:int=7;varq:int=7;varr:int=1;varresult:bool...'
   StatementContext: 'varp:int=7;'
     VarDeclContext: 'varp:int=7;'
       TerminalNodeImpl: 'var'
@@ -114,9 +118,13 @@ ProgramContext: 'varp:int=7;varq:int=7;varr:int=1;result=not((p=...'
           ArithFactorContext: '1'
             TerminalNodeImpl: '1'
       TerminalNodeImpl: ';'
-  StatementContext: 'result=not((p==q)and((q-r)<=6))orfalse;'
-    AssignmentContext: 'result=not((p==q)and((q-r)<=6))orfalse;'
+  StatementContext: 'varresult:bool=not((p==q)and((q-r)<=6))orfalse;'
+    VarDeclContext: 'varresult:bool=not((p==q)and((q-r)<=6))orfalse;'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
       TerminalNodeImpl: '='
       BoolExprContext: 'not((p==q)and((q-r)<=6))orfalse'
         BoolExprContext: 'not((p==q)and((q-r)<=6))'
@@ -220,7 +228,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/success4.txt
-✓ Análisis léxico:       49 tokens generados
+✓ Análisis léxico:       52 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     11 instrucciones TAC

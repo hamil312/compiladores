@@ -22,45 +22,49 @@ Tokens encontrados:
   19. ASSIGN          -> '='
   20. INT             -> '2'
   21. SEMI            -> ';'
-  22. ID              -> 'result'
-  23. ASSIGN          -> '='
-  24. LPAREN          -> '('
-  25. ID              -> 'x'
-  26. DIV             -> '/'
+  22. VAR             -> 'var'
+  23. ID              -> 'result'
+  24. COLON           -> ':'
+  25. BOOL_TYPE       -> 'bool'
+  26. ASSIGN          -> '='
   27. LPAREN          -> '('
-  28. ID              -> 'y'
-  29. SUB             -> '-'
-  30. ID              -> 'z'
-  31. RPAREN          -> ')'
-  32. GTE             -> '>='
-  33. INT             -> '3'
+  28. ID              -> 'x'
+  29. DIV             -> '/'
+  30. LPAREN          -> '('
+  31. ID              -> 'y'
+  32. SUB             -> '-'
+  33. ID              -> 'z'
   34. RPAREN          -> ')'
-  35. OR              -> 'or'
-  36. LPAREN          -> '('
-  37. NOT             -> 'not'
-  38. LPAREN          -> '('
-  39. ID              -> 'y'
-  40. MUL             -> '*'
-  41. ID              -> 'z'
-  42. EQ              -> '=='
-  43. INT             -> '8'
-  44. RPAREN          -> ')'
-  45. AND             -> 'and'
-  46. ID              -> 'x'
-  47. LT              -> '<'
-  48. INT             -> '20'
-  49. RPAREN          -> ')'
-  50. SEMI            -> ';'
-  51. PRINT           -> 'print'
-  52. LPAREN          -> '('
-  53. ID              -> 'result'
-  54. RPAREN          -> ')'
-  55. SEMI            -> ';'
+  35. GTE             -> '>='
+  36. INT             -> '3'
+  37. RPAREN          -> ')'
+  38. OR              -> 'or'
+  39. LPAREN          -> '('
+  40. NOT             -> 'not'
+  41. LPAREN          -> '('
+  42. ID              -> 'y'
+  43. MUL             -> '*'
+  44. ID              -> 'z'
+  45. EQ              -> '=='
+  46. INT             -> '8'
+  47. RPAREN          -> ')'
+  48. AND             -> 'and'
+  49. ID              -> 'x'
+  50. LT              -> '<'
+  51. INT             -> '20'
+  52. RPAREN          -> ')'
+  53. SEMI            -> ';'
+  54. PRINT           -> 'print'
+  55. LPAREN          -> '('
+  56. ID              -> 'result'
+  57. RPAREN          -> ')'
+  58. SEMI            -> ';'
 
 Resumen de tipos de token:
   - AND: 1
   - ASSIGN: 4
-  - COLON: 3
+  - BOOL_TYPE: 1
+  - COLON: 4
   - DIV: 1
   - EQ: 1
   - GTE: 1
@@ -76,13 +80,13 @@ Resumen de tipos de token:
   - RPAREN: 5
   - SEMI: 5
   - SUB: 1
-  - VAR: 3
-[OK] 55 tokens significativos generados.
+  - VAR: 4
+[OK] 58 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
 Estructura del Parse Tree (primeros 50 caracteres por línea):
-ProgramContext: 'varx:int=10;vary:int=4;varz:int=2;result=(x/(y-...'
+ProgramContext: 'varx:int=10;vary:int=4;varz:int=2;varresult:boo...'
   StatementContext: 'varx:int=10;'
     VarDeclContext: 'varx:int=10;'
       TerminalNodeImpl: 'var'
@@ -122,9 +126,13 @@ ProgramContext: 'varx:int=10;vary:int=4;varz:int=2;result=(x/(y-...'
           ArithFactorContext: '2'
             TerminalNodeImpl: '2'
       TerminalNodeImpl: ';'
-  StatementContext: 'result=(x/(y-z)>=3)or(not(y*z==8)andx<20);'
-    AssignmentContext: 'result=(x/(y-z)>=3)or(not(y*z==8)andx<20);'
+  StatementContext: 'varresult:bool=(x/(y-z)>=3)or(not(y*z==8)andx<20);'
+    VarDeclContext: 'varresult:bool=(x/(y-z)>=3)or(not(y*z==8)andx<20);'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
       TerminalNodeImpl: '='
       BoolExprContext: '(x/(y-z)>=3)or(not(y*z==8)andx<20)'
         BoolExprContext: '(x/(y-z)>=3)'
@@ -236,7 +244,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/success3.txt
-✓ Análisis léxico:       55 tokens generados
+✓ Análisis léxico:       58 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     14 instrucciones TAC

@@ -22,35 +22,39 @@ Tokens encontrados:
   19. ASSIGN          -> '='
   20. INT             -> '3'
   21. SEMI            -> ';'
-  22. ID              -> 'result'
-  23. ASSIGN          -> '='
-  24. LPAREN          -> '('
-  25. ID              -> 'a'
-  26. GT              -> '>'
-  27. INT             -> '5'
-  28. AND             -> 'and'
-  29. ID              -> 'b'
-  30. LT              -> '<'
-  31. INT             -> '10'
-  32. RPAREN          -> ')'
-  33. OR              -> 'or'
-  34. NOT             -> 'not'
-  35. LPAREN          -> '('
-  36. ID              -> 'c'
-  37. EQ              -> '=='
-  38. INT             -> '3'
-  39. RPAREN          -> ')'
-  40. SEMI            -> ';'
-  41. PRINT           -> 'print'
-  42. LPAREN          -> '('
-  43. ID              -> 'result'
-  44. RPAREN          -> ')'
-  45. SEMI            -> ';'
+  22. VAR             -> 'var'
+  23. ID              -> 'result'
+  24. COLON           -> ':'
+  25. BOOL_TYPE       -> 'bool'
+  26. ASSIGN          -> '='
+  27. LPAREN          -> '('
+  28. ID              -> 'a'
+  29. GT              -> '>'
+  30. INT             -> '5'
+  31. AND             -> 'and'
+  32. ID              -> 'b'
+  33. LT              -> '<'
+  34. INT             -> '10'
+  35. RPAREN          -> ')'
+  36. OR              -> 'or'
+  37. NOT             -> 'not'
+  38. LPAREN          -> '('
+  39. ID              -> 'c'
+  40. EQ              -> '=='
+  41. INT             -> '3'
+  42. RPAREN          -> ')'
+  43. SEMI            -> ';'
+  44. PRINT           -> 'print'
+  45. LPAREN          -> '('
+  46. ID              -> 'result'
+  47. RPAREN          -> ')'
+  48. SEMI            -> ';'
 
 Resumen de tipos de token:
   - AND: 1
   - ASSIGN: 4
-  - COLON: 3
+  - BOOL_TYPE: 1
+  - COLON: 4
   - EQ: 1
   - GT: 1
   - ID: 8
@@ -63,13 +67,13 @@ Resumen de tipos de token:
   - PRINT: 1
   - RPAREN: 3
   - SEMI: 5
-  - VAR: 3
-[OK] 45 tokens significativos generados.
+  - VAR: 4
+[OK] 48 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
 Estructura del Parse Tree (primeros 50 caracteres por línea):
-ProgramContext: 'vara:int=5;varb:int=8;varc:int=3;result=(a>5and...'
+ProgramContext: 'vara:int=5;varb:int=8;varc:int=3;varresult:bool...'
   StatementContext: 'vara:int=5;'
     VarDeclContext: 'vara:int=5;'
       TerminalNodeImpl: 'var'
@@ -109,9 +113,13 @@ ProgramContext: 'vara:int=5;varb:int=8;varc:int=3;result=(a>5and...'
           ArithFactorContext: '3'
             TerminalNodeImpl: '3'
       TerminalNodeImpl: ';'
-  StatementContext: 'result=(a>5andb<10)ornot(c==3);'
-    AssignmentContext: 'result=(a>5andb<10)ornot(c==3);'
+  StatementContext: 'varresult:bool=(a>5andb<10)ornot(c==3);'
+    VarDeclContext: 'varresult:bool=(a>5andb<10)ornot(c==3);'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
       TerminalNodeImpl: '='
       BoolExprContext: '(a>5andb<10)ornot(c==3)'
         BoolExprContext: '(a>5andb<10)'
@@ -216,7 +224,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/success1.txt
-✓ Análisis léxico:       45 tokens generados
+✓ Análisis léxico:       48 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     11 instrucciones TAC

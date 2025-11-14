@@ -29,31 +29,35 @@ Tokens encontrados:
   26. INT             -> '1'
   27. SEMI            -> ';'
   28. RBRACE          -> '}'
-  29. ID              -> 'result'
-  30. ASSIGN          -> '='
-  31. LPAREN          -> '('
-  32. ID              -> 'a'
-  33. EQ              -> '=='
-  34. INT             -> '5'
-  35. RPAREN          -> ')'
-  36. AND             -> 'and'
-  37. LPAREN          -> '('
-  38. ID              -> 'b'
-  39. LT              -> '<'
-  40. INT             -> '10'
-  41. RPAREN          -> ')'
-  42. SEMI            -> ';'
-  43. PRINT           -> 'print'
-  44. LPAREN          -> '('
-  45. ID              -> 'result'
-  46. RPAREN          -> ')'
-  47. SEMI            -> ';'
+  29. VAR             -> 'var'
+  30. ID              -> 'result'
+  31. COLON           -> ':'
+  32. BOOL_TYPE       -> 'bool'
+  33. ASSIGN          -> '='
+  34. LPAREN          -> '('
+  35. ID              -> 'a'
+  36. EQ              -> '=='
+  37. INT             -> '5'
+  38. RPAREN          -> ')'
+  39. AND             -> 'and'
+  40. LPAREN          -> '('
+  41. ID              -> 'b'
+  42. LT              -> '<'
+  43. INT             -> '10'
+  44. RPAREN          -> ')'
+  45. SEMI            -> ';'
+  46. PRINT           -> 'print'
+  47. LPAREN          -> '('
+  48. ID              -> 'result'
+  49. RPAREN          -> ')'
+  50. SEMI            -> ';'
 
 Resumen de tipos de token:
   - ADD: 1
   - AND: 1
   - ASSIGN: 4
-  - COLON: 2
+  - BOOL_TYPE: 1
+  - COLON: 3
   - EQ: 1
   - ID: 9
   - INT: 6
@@ -65,14 +69,14 @@ Resumen de tipos de token:
   - RBRACE: 1
   - RPAREN: 4
   - SEMI: 5
-  - VAR: 2
+  - VAR: 3
   - WHILE: 1
-[OK] 47 tokens significativos generados.
+[OK] 50 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
 Estructura del Parse Tree (primeros 50 caracteres por línea):
-ProgramContext: 'vara:int=0;varb:int=3;while(a<5){a=a+1;}result=...'
+ProgramContext: 'vara:int=0;varb:int=3;while(a<5){a=a+1;}varresu...'
   StatementContext: 'vara:int=0;'
     VarDeclContext: 'vara:int=0;'
       TerminalNodeImpl: 'var'
@@ -117,9 +121,13 @@ ProgramContext: 'vara:int=0;varb:int=3;while(a<5){a=a+1;}result=...'
             ArithExprContext: 'a+1'
             TerminalNodeImpl: ';'
         TerminalNodeImpl: '}'
-  StatementContext: 'result=(a==5)and(b<10);'
-    AssignmentContext: 'result=(a==5)and(b<10);'
+  StatementContext: 'varresult:bool=(a==5)and(b<10);'
+    VarDeclContext: 'varresult:bool=(a==5)and(b<10);'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
       TerminalNodeImpl: '='
       BoolExprContext: '(a==5)and(b<10)'
         BoolTermContext: '(a==5)and(b<10)'
@@ -220,7 +228,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/success9.txt
-✓ Análisis léxico:       47 tokens generados
+✓ Análisis léxico:       50 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     14 instrucciones TAC

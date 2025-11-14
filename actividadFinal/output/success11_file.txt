@@ -45,32 +45,35 @@ Tokens encontrados:
   42. ASSIGN          -> '='
   43. FALSE           -> 'false'
   44. SEMI            -> ';'
-  45. ID              -> 'result'
-  46. ASSIGN          -> '='
-  47. ID              -> 'xor'
-  48. LPAREN          -> '('
-  49. ID              -> 'u'
-  50. COMMA           -> ','
-  51. ID              -> 'v'
-  52. RPAREN          -> ')'
-  53. OR              -> 'or'
-  54. LPAREN          -> '('
-  55. ID              -> 'u'
-  56. AND             -> 'and'
-  57. ID              -> 'v'
-  58. RPAREN          -> ')'
-  59. SEMI            -> ';'
-  60. PRINT           -> 'print'
-  61. LPAREN          -> '('
-  62. ID              -> 'result'
-  63. RPAREN          -> ')'
-  64. SEMI            -> ';'
+  45. VAR             -> 'var'
+  46. ID              -> 'result'
+  47. COLON           -> ':'
+  48. BOOL_TYPE       -> 'bool'
+  49. ASSIGN          -> '='
+  50. ID              -> 'xor'
+  51. LPAREN          -> '('
+  52. ID              -> 'u'
+  53. COMMA           -> ','
+  54. ID              -> 'v'
+  55. RPAREN          -> ')'
+  56. OR              -> 'or'
+  57. LPAREN          -> '('
+  58. ID              -> 'u'
+  59. AND             -> 'and'
+  60. ID              -> 'v'
+  61. RPAREN          -> ')'
+  62. SEMI            -> ';'
+  63. PRINT           -> 'print'
+  64. LPAREN          -> '('
+  65. ID              -> 'result'
+  66. RPAREN          -> ')'
+  67. SEMI            -> ';'
 
 Resumen de tipos de token:
   - AND: 3
   - ASSIGN: 3
-  - BOOL_TYPE: 5
-  - COLON: 5
+  - BOOL_TYPE: 6
+  - COLON: 6
   - COMMA: 2
   - FALSE: 1
   - FUNCTION: 1
@@ -85,8 +88,8 @@ Resumen de tipos de token:
   - RPAREN: 6
   - SEMI: 5
   - TRUE: 1
-  - VAR: 2
-[OK] 64 tokens significativos generados.
+  - VAR: 3
+[OK] 67 tokens significativos generados.
 
 FASE 2: ANALISIS SINTACTICO
 --------------------------------------------------
@@ -153,9 +156,13 @@ ProgramContext: 'fnxor(a:bool,b:bool):bool{return(aandnotb)or(no...'
           BoolFactorContext: 'false'
             TerminalNodeImpl: 'false'
       TerminalNodeImpl: ';'
-  StatementContext: 'result=xor(u,v)or(uandv);'
-    AssignmentContext: 'result=xor(u,v)or(uandv);'
+  StatementContext: 'varresult:bool=xor(u,v)or(uandv);'
+    VarDeclContext: 'varresult:bool=xor(u,v)or(uandv);'
+      TerminalNodeImpl: 'var'
       TerminalNodeImpl: 'result'
+      TerminalNodeImpl: ':'
+      VarTypeContext: 'bool'
+        TerminalNodeImpl: 'bool'
       TerminalNodeImpl: '='
       BoolExprContext: 'xor(u,v)or(uandv)'
         BoolExprContext: 'xor(u,v)'
@@ -272,7 +279,7 @@ if __name__ == '__main__':
 RESUMEN DE COMPILACION
 --------------------------------------------------
 ✓ Archivo de entrada:    input/success11.txt
-✓ Análisis léxico:       64 tokens generados
+✓ Análisis léxico:       67 tokens generados
 ✓ Análisis sintáctico:   Parse tree completado
 ✓ Análisis semántico:    0 errores encontrados
 ✓ Código intermedio:     16 instrucciones TAC

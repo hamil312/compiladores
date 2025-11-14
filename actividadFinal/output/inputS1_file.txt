@@ -215,7 +215,7 @@ end_func_add:
 func_isPositive:
   t1 = n > 0
   ret t1
-  goto end_func_isPositivse
+  goto end_func_isPositive
 end_func_isPositive:
   t2 = call add(5, 3)
   a = t2
